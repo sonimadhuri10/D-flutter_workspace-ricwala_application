@@ -270,14 +270,27 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                   children: <Widget>[
                                     new GestureDetector(
                                       onTap: () {
-                                       var res = db.getClient(lis[index].id);
-                                         DBProvider.db.newClient(
+                                      var res =   DBProvider.db.getClient(lis[index].id);
+                                      Fluttertoast.showToast(
+                                          msg: res.toString().substring(4),
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIos: 1,
+                                          backgroundColor: Colors.grey,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                          DBProvider.db.insertClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);
+
+
+                                        /* DBProvider.db.newClient(
                                             lis[index].id,
                                             lis[index].name,
                                             "1",
                                             lis[index].price,
                                             lis[index].category,
-                                            res.toString().substring(4));
+                                           "qwq");*/
+
+                                       //  DBProvider.db.newClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);
                                       },
                                       child: new Container(
                                         margin: EdgeInsets.fromLTRB(
@@ -296,21 +309,33 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                         child: txt),
                                     new GestureDetector(
                                       onTap: () {
-                                        var res = db.getClient(lis[index].id);
+
+                                     var res =  DBProvider.db.getClient(lis[index].id);
                                         Fluttertoast.showToast(
-                                            msg: txt.data,
+                                            msg: res.row[14],
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.BOTTOM,
                                             timeInSecForIos: 1,
                                             backgroundColor: Colors.grey,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
-                                        db.decrementClient(
-                                            lis[index].id,
-                                            lis[index].name,
-                                            txt.data,
-                                            lis[index].price,
-                                            lis[index].category,res.toString().substring(4));
+
+
+//                                         DBProvider.db.getClient(lis[index].id);
+//                                        Fluttertoast.showToast(
+//                                            msg: txt.data,
+//                                            toastLength: Toast.LENGTH_SHORT,
+//                                            gravity: ToastGravity.BOTTOM,
+//                                            timeInSecForIos: 1,
+//                                            backgroundColor: Colors.grey,
+//                                            textColor: Colors.white,
+//                                            fontSize: 16.0);
+//                                        DBProvider.db.decrementClient(
+//                                            lis[index].id,
+//                                            lis[index].name,
+//                                            txt.data,
+//                                            lis[index].price,
+//                                            lis[index].category,"12");
 
                                         /* if( int.parse(txt.data) > 1){
                                           db.decrementClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);

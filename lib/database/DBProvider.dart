@@ -24,7 +24,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "shudhh2o.db");
+    String path = join(documentsDirectory.path, "ricwal.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
           await db.execute("CREATE TABLE Cart ("
@@ -39,13 +39,42 @@ class DBProvider {
   }
 
 
+  insertClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
+    final db = await database;
+    //get the biggest id in the table
+    var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Cart");
+    int id = table.first["id"];
+    //insert to the table using the new id
+    var raw = await db.rawInsert(
+        "INSERT Into Cart (id,product_id,product_name,quantity,price,category)"
+            " VALUES (?,?,?,?,?,?)",
+        [id,
+        pro_id,
+        product_name,
+        product_quantity,
+        product_price,
+        product_category
+        ]);
 
-  newClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category,String tablePrice) async {
+    Fluttertoast.showToast(msg: "Add In Your Cart",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity:
+        ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0);
+    return raw;
+  }
+
+
+
+    newClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
     final db = await database;
     var count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Cart WHERE product_id = '${pro_id}'"));
     print('COUNTING DATA ${count}');
     if(count == 1){
-      updateClient(pro_id,product_name,product_quantity,product_price,product_category,tablePrice);
+      updateClient(pro_id,product_name,product_quantity,product_price,product_category);
     } else {
       //get the biggest id in the table
       var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Cart");
@@ -62,7 +91,12 @@ class DBProvider {
             product_price,
             product_category
           ]);
-      Fluttertoast.showToast(msg: "Add In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.grey, textColor: Colors.white, fontSize: 16.0);
+      Fluttertoast.showToast(msg: "Add In Your Cart",
+          toastLength: Toast.LENGTH_SHORT, gravity:
+          ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white, fontSize: 16.0);
 
       return raw;
 
@@ -71,13 +105,13 @@ class DBProvider {
   }
 
 
-  updateClient(String pro_id,String product_name,String product_quantity, product_price,String product_category,String tablePrice) async {
+  updateClient(String pro_id,String product_name,String product_quantity, product_price,String product_category) async {
     final db = await database;
-    int tabPrice = int.parse(tablePrice);
+   // int tabPrice = int.parse(tablePrice);
     int price = int.parse(product_price);
     int quan = int.parse(product_quantity);
     var res =
-    db.rawUpdate("UPDATE Cart SET  quantity = '${(quan+1).toString()}',price = '${(tabPrice+price).toString()}' WHERE product_id = '${pro_id}'");
+    db.rawUpdate("UPDATE Cart SET  quantity = '${(quan+1).toString()}',price = '${(price+price).toString()}' WHERE product_id = '${pro_id}'");
     Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.grey, textColor: Colors.white, fontSize: 16.0);
 
     return res;

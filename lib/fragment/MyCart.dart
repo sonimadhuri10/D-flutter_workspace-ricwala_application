@@ -146,7 +146,11 @@ class MyCartState extends State<MyCart> {
                                 backgroundColor: Colors.green,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
-                            db.deleteClient(item.product_id,item.product_name);},
+                            DBProvider.db.deleteClient(item.product_id,item.product_name);
+                            setState(() {
+
+                            });
+                            },
                           child: new Container(
                             margin: EdgeInsets.fromLTRB(4.0, 3.0, 0.0, 0.0),
                             child: Icon(
