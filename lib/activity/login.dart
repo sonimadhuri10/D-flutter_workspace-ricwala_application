@@ -57,15 +57,16 @@ class LoginState extends State<Login> {
       String status = data['status'].toString();
       String otp = data['otp'].toString();
 
-      var details=data['data'];
-      String name = details['name'].toString();
-      String email = details['email'].toString();
-      String userid = details['_id'].toString();
-
       print('RESPONCE_DATA : ' + status);
       CustomProgressLoader.cancelLoader(context);
 
       if (status == "200") {
+
+        var details=data['data'];
+        String name = details['name'].toString();
+        String email = details['email'].toString();
+        String userid = details['_id'].toString();
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('loginstatus', 'true');
         prefs.setString('name', name);
@@ -81,19 +82,11 @@ class LoginState extends State<Login> {
             textColor: Colors.white,
             fontSize: 16.0);
 
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             new MaterialPageRoute(
                 builder: (BuildContext context) => HomePage()));
       } else if (message == "otp verification pending") {
-        Fluttertoast.showToast(
-            msg: "Your one time password is " + otp,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0);
         Navigator.push(
             context,
             new MaterialPageRoute(

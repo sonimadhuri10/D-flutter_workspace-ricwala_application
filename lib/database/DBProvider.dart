@@ -39,6 +39,31 @@ class DBProvider {
   }
 
 
+
+  FinalClient(String pro_id,String product_name,String product_quantity, product_price,
+      String product_category) async {
+    final db = await database;
+    var res = await db.query("Cart", where: "product_id = ?", whereArgs: [pro_id]);
+    return res.isNotEmpty ?
+        updateClient(pro_id, product_name, product_quantity, product_price,
+            product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity)
+        :
+      insertClient(pro_id, product_name, product_quantity, product_price, product_category)
+    ;
+  }
+
+
+  FinalDecrement(String pro_id,String product_name,String product_quantity, product_price,
+      String product_category) async {
+    final db = await database;
+    var res = await db.query("Cart", where: "product_id = ?", whereArgs: [pro_id]);
+    return res.isNotEmpty ?
+    decrementClient(pro_id, product_name, product_quantity, product_price,
+        product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity) : null ;
+  }
+
+
+
   insertClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
     final db = await database;
     //get the biggest id in the table
@@ -61,14 +86,14 @@ class DBProvider {
         gravity:
         ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.green,
         textColor: Colors.white,
         fontSize: 16.0);
     return raw;
   }
 
 
-
+/*
     newClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
     final db = await database;
     var count = Sqflite.firstIntValue(await db.rawQuery("SELECT COUNT(*) FROM Cart WHERE product_id = '${pro_id}'"));
@@ -103,29 +128,35 @@ class DBProvider {
     }
     return null;
   }
+*/
 
 
-  updateClient(String pro_id,String product_name,String product_quantity, product_price,String product_category) async {
+  updateClient(String pro_id,String product_name,String product_quantity, product_price,
+      String product_category,String tablePrice,String tableQuan) async {
     final db = await database;
-   // int tabPrice = int.parse(tablePrice);
+    int tabPrice = int.parse(tablePrice);
     int price = int.parse(product_price);
-    int quan = int.parse(product_quantity);
+    int tabQuan = int.parse(tableQuan);
     var res =
-    db.rawUpdate("UPDATE Cart SET  quantity = '${(quan+1).toString()}',price = '${(price+price).toString()}' WHERE product_id = '${pro_id}'");
-    Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.grey, textColor: Colors.white, fontSize: 16.0);
+    db.rawUpdate("UPDATE Cart SET  quantity = '${(tabQuan+1).toString()}',price = '${(tabPrice+price).toString()}' WHERE product_id = '${pro_id}'");
+    Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.green,
+        textColor: Colors.white, fontSize: 16.0);
 
     return res;
   }
 
 
-  decrementClient(String pro_id,String product_name,String product_quantity, product_price,String product_category,String tablePrice) async {
+  decrementClient(String pro_id,String product_name,String product_quantity, product_price,
+      String product_category,String tablePrice,String tableQuan) async {
     final db = await database;
     int tabPrice = int.parse(tablePrice);
     int price = int.parse(product_price);
-    int quan = int.parse(product_quantity);
+    int quan = int.parse(tableQuan);
     var res =
     db.rawUpdate("UPDATE Cart SET  quantity = '${(quan-1).toString()}',price = '${(tabPrice-price).toString()}' WHERE product_id = '${pro_id}'");
-    Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.grey, textColor: Colors.white, fontSize: 16.0);
+    Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity:
+    ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.green, textColor: Colors.white, fontSize: 16.0);
 
     return res;
   }
@@ -147,6 +178,13 @@ class DBProvider {
     return list;
   }
 
+
+  getCount() async {
+    var db = await database;
+    return Sqflite. firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM Cart'));
+  }
+
+
   Future  getAllClientsCard() async {
     final db = await database;
     var res = await db.query("Cart");
@@ -159,9 +197,7 @@ class DBProvider {
 
   deleteClient(String id, String name) async {
     final db = await database;
-    Fluttertoast.showToast(msg: "item removed from your cart", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.grey, textColor: Colors.white, fontSize: 16.0);
     return db.delete("Cart", where: "product_id = ? AND product_name = ?", whereArgs: [id,name]);
-
   }
 
   Future calculateTotal() async {
@@ -178,4 +214,6 @@ class DBProvider {
     final db = await database;
     db.rawDelete("DELETE FROM Cart");
   }
+
+
 }

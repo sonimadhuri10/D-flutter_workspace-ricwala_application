@@ -8,6 +8,8 @@ import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/database/DBProvider.dart';
 import 'package:ricwala_application/model/Product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+
 
 class dashboardFragment extends StatefulWidget {
   @override
@@ -175,204 +177,167 @@ class dashboardFragmentState extends State<dashboardFragment> {
     final double itemHeight = (size.height - kToolbarHeight - 24) / 2.2;
     final double itemWidth = size.width / 2;
     return Scaffold(
-      body: GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: EdgeInsets.all(2.0),
-            child: new GestureDetector(
-              child: Container(
-                child: Container(
-                  margin: EdgeInsets.all(2.0),
-                  child: Card(
-                    child: Column(
-                      children: <Widget>[
-                        new GestureDetector(
-                          onTap: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            Map map = {
-                              "user_id": '${prefs.getString('_id').toString()}',
-                              "product_id": '${lis[index].id}',
-                              "product_name": '${lis[index].name}',
-                              "company_name": '${lis[index].company}',
-                              "image": '${lis[index].image}',
-                              "description": '${lis[index].description}',
-                              "category": '${lis[index].category}',
-                              "quantity": '${lis[index].quantity}',
-                              "unit": '${lis[index].unit}',
-                              "price": '${lis[index].price}'
-                            };
-                            addWishlist(Constants.WISHLIST_URL, map);
-                          },
-                          child: new Container(
-                            margin: EdgeInsets.fromLTRB(100.0, 4.0, 0.0, 0.0),
-                            alignment: Alignment.topRight,
-                            child: new Icon(
-                              Icons.favorite,
-                              color: _iconColor,
-                            ),
-                            width: 20.0,
-                            height: 20.0,
-                          ),
-                        ),
-                        new Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
-                          child: new Image.asset('images/ricecan.jpg'),
-                          width: double.infinity,
-                          height: 125.0,
-                        ),
-                        new Container(
-                          margin: EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 0.0),
-                          alignment: Alignment.topLeft,
-                          child: new Text(
-                            lis[index].name,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        new Container(
-                          margin: EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
-                          alignment: Alignment.topLeft,
-                          child: new Text(
-                            lis[index].company,
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                        new Container(
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              new Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
-                                alignment: Alignment.topLeft,
-                                child: new Text(
-                                  lis[index].price,
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
+      body: new SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            new SizedBox(
+                height: 150.0,
+                width: double.infinity,
+                child: new Carousel(
+                  images: [
+                    new NetworkImage('https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg'),
+                    new NetworkImage('https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
+                    new ExactAssetImage("assets/images/LaunchImage.jpg")
+                  ],
+                  dotSize: 4.0,
+                  dotSpacing: 15.0,
+                  dotColor: Colors.green,
+                  indicatorBgPadding: 5.0,
+                  dotBgColor: Colors.grey.withOpacity(0.5),
+                )
+            ),
+            new Container(
+              child: GridView.builder(
+                physics: PageScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: (itemWidth / itemHeight)),
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child: new GestureDetector(
+                      child: Container(
+                        child: Container(
+                          margin: EdgeInsets.all(2.0),
+                          child: Card(
+                            child: Column(
+                              children: <Widget>[
+                                new GestureDetector(
+                                  onTap: () async {
+                                    SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                    Map map = {
+                                      "user_id": '${prefs.getString('_id').toString()}',
+                                      "product_id": '${lis[index].id}',
+                                      "product_name": '${lis[index].name}',
+                                      "company_name": '${lis[index].company}',
+                                      "image": '${lis[index].image}',
+                                      "description": '${lis[index].description}',
+                                      "category": '${lis[index].category}',
+                                      "quantity": '${lis[index].quantity}',
+                                      "unit": '${lis[index].unit}',
+                                      "price": '${lis[index].price}'
+                                    };
+                                    addWishlist(Constants.WISHLIST_URL, map);
+                                  },
+                                  child: new Container(
+                                    margin: EdgeInsets.fromLTRB(100.0, 4.0, 0.0, 0.0),
+                                    alignment: Alignment.topRight,
+                                    child: new Icon(
+                                      Icons.favorite,
+                                      color: _iconColor,
+                                    ),
+                                    width: 20.0,
+                                    height: 20.0,
+                                  ),
                                 ),
-                              ),
-                              new Container(
-                                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                                alignment: Alignment.topRight,
-                                child: new Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: <Widget>[
-                                    new GestureDetector(
-                                      onTap: () {
-                                      var res =   DBProvider.db.getClient(lis[index].id);
-                                      Fluttertoast.showToast(
-                                          msg: res.toString().substring(4),
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIos: 1,
-                                          backgroundColor: Colors.grey,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                          DBProvider.db.insertClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);
-
-
-                                        /* DBProvider.db.newClient(
-                                            lis[index].id,
-                                            lis[index].name,
-                                            "1",
-                                            lis[index].price,
-                                            lis[index].category,
-                                           "qwq");*/
-
-                                       //  DBProvider.db.newClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);
-                                      },
-                                      child: new Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            10.0, 3.0, 0.0, 0.0),
+                                new Container(
+                                  margin: EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
+                                  child: new Image.asset('images/ricecan.jpg'),
+                                  width: double.infinity,
+                                  height: 125.0,
+                                ),
+                                new Container(
+                                  margin: EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 0.0),
+                                  alignment: Alignment.topLeft,
+                                  child: new Text(
+                                    lis[index].name,
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                new Container(
+                                  margin: EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
+                                  alignment: Alignment.topLeft,
+                                  child: new Text(
+                                    lis[index].company,
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                                new Container(
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      new Container(
+                                        margin:
+                                        EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
                                         alignment: Alignment.topLeft,
-                                        child: Image(
-                                            image:
-                                                AssetImage('images/plus.png')),
-                                        width: 20.0,
-                                        height: 20.0,
+                                        child: new Text(
+                                          lis[index].price,
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.normal),
+                                        ),
                                       ),
-                                    ),
-                                    new Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            5.0, 3.0, 0.0, 0.0),
-                                        child: txt),
-                                    new GestureDetector(
-                                      onTap: () {
-
-                                     var res =  DBProvider.db.getClient(lis[index].id);
-                                        Fluttertoast.showToast(
-                                            msg: res.row[14],
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                            timeInSecForIos: 1,
-                                            backgroundColor: Colors.grey,
-                                            textColor: Colors.white,
-                                            fontSize: 16.0);
-
-
-//                                         DBProvider.db.getClient(lis[index].id);
-//                                        Fluttertoast.showToast(
-//                                            msg: txt.data,
-//                                            toastLength: Toast.LENGTH_SHORT,
-//                                            gravity: ToastGravity.BOTTOM,
-//                                            timeInSecForIos: 1,
-//                                            backgroundColor: Colors.grey,
-//                                            textColor: Colors.white,
-//                                            fontSize: 16.0);
-//                                        DBProvider.db.decrementClient(
-//                                            lis[index].id,
-//                                            lis[index].name,
-//                                            txt.data,
-//                                            lis[index].price,
-//                                            lis[index].category,"12");
-
-                                        /* if( int.parse(txt.data) > 1){
-                                          db.decrementClient(lis[index].id, lis[index].name, lis[index].quantity, lis[index].price, lis[index].category);
-                                       }else{
-                                         Fluttertoast.showToast(
-                                             msg: "Sorry cant apply",
-                                             toastLength: Toast.LENGTH_SHORT,
-                                             gravity: ToastGravity.BOTTOM,
-                                             timeInSecForIos: 1,
-                                             backgroundColor: Colors.grey,
-                                             textColor: Colors.white,
-                                             fontSize: 16.0);
-                                       }*/
-                                      },
-                                      child: new Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            5.0, 3.0, 8.0, .0),
-                                        child: Image(
-                                            image:
-                                                AssetImage('images/minus.png')),
-                                        width: 20.0,
-                                        height: 20.0,
-                                      ),
-                                    ),
-                                  ],
+                                      new Container(
+                                        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                                        alignment: Alignment.topRight,
+                                        child: new Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: <Widget>[
+                                            new GestureDetector(
+                                              onTap: () {
+                                                DBProvider.db.FinalClient(lis[index].id, lis[index].name, "1", lis[index].price, lis[index].category);
+                                              },
+                                              child: new Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10.0, 3.0, 0.0, 0.0),
+                                                alignment: Alignment.topLeft,
+                                                child: Image(
+                                                    image:
+                                                    AssetImage('images/plus.png')),
+                                                width: 20.0,
+                                                height: 20.0,
+                                              ),
+                                            ),
+                                            new Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    5.0, 3.0, 0.0, 0.0),
+                                                child: txt),
+                                            new GestureDetector(
+                                              onTap: () {
+                                                DBProvider.db.FinalDecrement(lis[index].id, lis[index].name,
+                                                    "1", lis[index].price, lis[index].category);
+                                              },
+                                              child: new Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    5.0, 3.0, 8.0, .0),
+                                                child: Image(
+                                                    image:
+                                                    AssetImage('images/minus.png')),
+                                                width: 20.0,
+                                                height: 20.0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              onTap: () {
-                /* Fluttertoast.showToast(
+                      ),
+                      onTap: () {
+                        /* Fluttertoast.showToast(
                     msg: lis[index].name,
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
@@ -380,12 +345,19 @@ class dashboardFragmentState extends State<dashboardFragment> {
                     backgroundColor: Colors.grey,
                     textColor: Colors.white,
                     fontSize: 16.0);*/
-              },
+                      },
+                    ),
+                  );
+                },
+                itemCount: lis.length,
+              ),
             ),
-          );
-        },
-        itemCount: lis.length,
-      ),
+
+
+          ],
+        ),
+
+      )
     );
   }
 }

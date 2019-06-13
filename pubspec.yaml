@@ -30,6 +30,7 @@ dependencies:
   image_picker: ^0.6.0+8
   path_provider: ^0.4.1
   sqflite: ^1.1.0
+  carousel_pro: ^0.0.13
 
 
 dev_dependencies:
@@ -63,6 +64,8 @@ flutter:
   - images/ricecan.jpg
   - images/riceimage.jpg
   - images/location.png
+  - images/manprofile.png
+  - images/kisans.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

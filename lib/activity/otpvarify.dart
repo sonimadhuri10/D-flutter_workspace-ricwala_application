@@ -60,15 +60,16 @@ class OtpvarifyState extends State<Otpvarify> {
       String status = data['status'].toString();
       String message = data['message'].toString();
 
-      var details=data['details'];
-      String name = details['name'].toString();
-      String email = details['email'].toString();
-      String userid = details['_id'].toString();
-
       print('RESPONCE_DATA : ' + status);
       CustomProgressLoader.cancelLoader(context);
 
       if (message=="success") {
+
+        var details=data['details'];
+        String name = details['name'].toString();
+        String email = details['email'].toString();
+        String userid = details['_id'].toString();
+
         Fluttertoast.showToast(
             msg: "Successfully Varified",
             toastLength: Toast.LENGTH_SHORT,
@@ -83,7 +84,7 @@ class OtpvarifyState extends State<Otpvarify> {
         prefs.setString('email', email);
         prefs.setString('_id', userid);
 
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             new MaterialPageRoute(
                 builder: (BuildContext context) => HomePage()));
@@ -145,14 +146,6 @@ class OtpvarifyState extends State<Otpvarify> {
 
       print('RESPONCE_DATA : ' + status);
       CustomProgressLoader.cancelLoader(context);
-      Fluttertoast.showToast(
-          msg: "Your otp is ${widget.otp}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white,
-          fontSize: 16.0);
 
       /*} else {
         CustomProgressLoader.cancelLoader(context);

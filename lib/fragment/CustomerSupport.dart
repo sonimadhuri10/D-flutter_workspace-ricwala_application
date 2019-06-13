@@ -123,8 +123,6 @@ class CustomerSupportState extends State<CustomerSupport> {
                 new Container(
                   margin: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
                   child: new Image.asset('images/logo.png'),
-                  decoration: BoxDecoration(
-                      color: Colors.green, shape: BoxShape.circle),
                   width: 80.0,
                   height: 80.0,
                 ),

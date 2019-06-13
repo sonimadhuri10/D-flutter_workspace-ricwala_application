@@ -65,8 +65,6 @@ class _StartScreenState extends State<StartScreen>{
           textLabel,
           SizedBox(height: 15.0),
           signUpButton,
-
-
         ],
       ),
     );

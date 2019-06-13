@@ -89,12 +89,12 @@ class ContactUsState extends State<ContactUs> {
             child: Column(
               children: <Widget>[
                 new Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                   child: new Text(
-                    'Contact US',
+                    'Registrant Contact Info',
                     style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 22.0,
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
                     ),
@@ -102,86 +102,256 @@ class ContactUsState extends State<ContactUs> {
                   ),
                 ),
                 new Container(
-                  margin: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
+                  margin: EdgeInsets.fromLTRB(10.0, 5.0, 15.0, 0.0),
                   child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Container(
-                        margin: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                         child: Image(image: AssetImage('images/cellphone.png')),
-                        width: 30.0,
-                        height: 30.0,
+                        width: 20.0,
+                        height: 20.0,
                       ),
                       new Expanded(
                           child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
-                        child: new Text(
-                          '9691889808',
+                            margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                            child: new Text(
+                          '9591670072',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.green,
-                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.right,
                         ),
                       ))
                     ],
                   ),
                 ),
                 new Container(
-                  margin: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
                   child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Container(
-                        margin: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                         child: Image(image: AssetImage('images/email.png')),
-                        width: 30.0,
-                        height: 30.0,
+                        width: 20.0,
+                        height: 20.0,
                       ),
                       new Expanded(
                           child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
-                        child: new Text(
-                          'admin@gmail.com',
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                          'boostervinodkumar@cloud.com',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.green,
-                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.right,
                         ),
                       ))
                     ],
                   ),
                 ),
                 new Container(
-                  margin: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
                   child: new Row(
                     children: <Widget>[
                       new Container(
-                        margin: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                         child: Image(image: AssetImage('images/location.png')),
-                        width: 30.0,
-                        height: 30.0,
+                        width: 20.0,
+                        height: 20.0,
                       ),
                       new Expanded(
                           child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
-                        child: new Text(
-                          '401 satguru prinay MR-9',
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                          'Gitam University Banglore Campus',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.green,
-                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.right,
                         ),
                       ))
                     ],
                   ),
                 ),
+
+                new Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                  child: new Text(
+                    'Tech Contact Info',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 5.0, 15.0, 0.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/cellphone.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                            child: new Text(
+                              '9791670072',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/email.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                              'ceo@ricwal.com',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
+                  child: new Row(
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/location.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                              'Gitam University Banglore Campus',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+
+                new Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                  child: new Text(
+                    'Admin Contact Info',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 5.0, 15.0, 0.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/cellphone.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                            child: new Text(
+                              '9591670072',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/email.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                              'boostervinodkumar@cloud.com',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 20.0, 15.0, 0.0),
+                  child: new Row(
+                    children: <Widget>[
+                      new Container(
+                        child: Image(image: AssetImage('images/location.png')),
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                      new Expanded(
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 00.0, 0.0, 0.0),
+                            child: new Text(
+                              'Gitam University Banglore Campus',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+
               ],
             ),
           ),

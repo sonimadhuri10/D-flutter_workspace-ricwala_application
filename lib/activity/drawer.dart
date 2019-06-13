@@ -4,13 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ricwala_application/activity/ProductDetail.dart';
 import 'package:ricwala_application/activity/signup.dart';
+import 'package:ricwala_application/database/DBProvider.dart';
+import 'package:ricwala_application/fragment/AboutUs.dart';
 import 'package:ricwala_application/fragment/ContactUs.dart';
 import 'package:ricwala_application/fragment/CustomerSupport.dart';
 import 'package:ricwala_application/fragment/EditProfile.dart';
 import 'package:ricwala_application/fragment/MyCart.dart';
+import 'package:ricwala_application/fragment/MyOrder.dart';
+import 'package:ricwala_application/fragment/OrderStatus.dart';
+import 'package:ricwala_application/fragment/PrivacySetting.dart';
+import 'package:ricwala_application/fragment/SearchBar.dart';
+import 'package:ricwala_application/fragment/SecuritySetting.dart';
+import 'package:ricwala_application/fragment/TodayDeal.dart';
 import 'package:ricwala_application/fragment/WishList.dart';
 import 'package:ricwala_application/fragment/dashboardFragment.dart';
 import 'package:ricwala_application/fragment/homeFragment.dart';
+import 'package:ricwala_application/model/ClientModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'login.dart';
@@ -27,7 +36,6 @@ class HomePage extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
     new DrawerItem("My Orders", Icons.offline_pin),
-    new DrawerItem("My Cart", Icons.add_shopping_cart),
     new DrawerItem("WishList", Icons.favorite),
     new DrawerItem("Today's Deal", Icons.business),
     new DrawerItem("Order Status", Icons.strikethrough_s),
@@ -48,6 +56,10 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   Future<File> imageFile;
   String name = "", email = "";
+  DBProvider db;
+  List<Client> lis = List();
+  int count=0;
+
 
   pickImageFromGallery(ImageSource source) {
     setState(() {
@@ -60,7 +72,23 @@ class HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     showdata();
+    total();
+    Fluttertoast.showToast(
+        msg: lis.length.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
+
+   total() async {
+    setState(() async {
+      count =  await DBProvider.db.getCount();
+    });
+  }
+
 
   int _selectedDrawerIndex = 0;
 
@@ -69,26 +97,24 @@ class HomePageState extends State<HomePage> {
       case 0:
         return new dashboardFragment();
       case 1:
-        return new HomeFragment();
+        return new MyOrder();
       case 2:
-        return new MyCart();
-      case 3:
         return new WishList();
+      case 3:
+        return new TodayDeal();
       case 4:
-        return new dashboardFragment();
+        return new OrderStatus();
       case 5:
-        return new dashboardFragment();
+        return new PrivacySetting();
       case 6:
-        return new dashboardFragment();
+        return new SecuritySetting();
       case 7:
-        return new dashboardFragment();
-      case 8:
         return new CustomerSupport();
+      case 8:
+        return new AboutUs();
       case 9:
-        return new dashboardFragment();
-      case 10:
         return new ContactUs();
-      case 11:
+      case 10:
         return new Logout();
       default:
         return new Text("Error");
@@ -112,14 +138,14 @@ class HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    fit: BoxFit.fill, image: (AssetImage('images/logo.png')))),
+                    fit: BoxFit.fill, image: (AssetImage('images/manprofile.png')))),
           );
         } else {
           return Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    fit: BoxFit.fill, image: (AssetImage('images/logo.png')))),
+                    fit: BoxFit.fill, image: (AssetImage('images/manprofile.png')))),
           );
           /*Text(
             'No Image Selected',
@@ -194,13 +220,61 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Colors.green,
         title: new Text("Ricwal"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {},
-          ),
+
+      new Container(
+          margin: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
+          child: new GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  new MaterialPageRoute(
+                      builder:(BuildContext context) =>
+                      new MyCart()
+                  )
+              );
+            },
+            child: new Stack(
+              children: <Widget>[
+                new IconButton(icon: new Icon(Icons.shopping_cart,
+                  color: Colors.white,),
+                  onPressed: null,
+                ),
+                lis.length == 0 ? new Container() :
+                new Positioned(
+                    child: new Stack(
+                      children: <Widget>[
+                        new Icon(
+                            Icons.brightness_1,
+                            size: 20.0, color: Colors.red[800]),
+                        new Positioned(
+                            top: 2.0,
+                            left: 2.0,
+                            right: 2.0,
+                            bottom: 2.0,
+                            child: new Center(
+                              child: new Text('${count}',
+                                style: new TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11.0,
+                                    fontWeight: FontWeight.w500
+                                ),
+                              ),
+                            )),
+                      ],
+                    )),
+
+              ],
+            ),
+          )
+      ),
+
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => SearchBar()));
+            },
           ),
           IconButton(
             icon: Icon(Icons.notifications_active, color: Colors.white),
@@ -258,13 +332,6 @@ class HomePageState extends State<HomePage> {
                         )),
                   ],
                 )),
-
-                /*accountEmail: new Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 3.0, 0.0, 0.0),
-                    child: Text(
-                      email,
-                      style: TextStyle(color: Colors.white),
-                    )),*/
               ),
               new Column(children: drawerOptions)
             ],

@@ -30,10 +30,6 @@ class WishListState extends State<WishList> {
     wishlist(Constants.WISHLISTFETCH_URL, map);
   }
 
-  Future delet() async {
-
-  }
-
   Future<String> wishlist(String url, Map jsonMap) async {
     try {
       //prefs = await SharedPreferences.getInstance();
@@ -49,22 +45,35 @@ class WishListState extends State<WishList> {
       httpClient.close();
       Map data = json.decode(reply);
       String status = data['status'].toString();
-      for (var word in data['details']) {
-        String id = word["_id"].toString();
-        String name = word["product_name"].toString();
-        String company = word["company_name"].toString();
-        String image = word["image"].toString();
-        String description = word["description"].toString();
-        String status = word["stock_status"].toString();
-        String category = word["category"].toString();
-        String quantity = word["quantity"].toString();
-        String price = word["price"].toString();
-        String unit = word["unit"].toString();
-        setState(() {
-          lis.add(Product_model(id, image, name, company, description, category,
-              quantity, status, price, unit));
-        });
+
+      if (status == "300") {
+        Fluttertoast.showToast(
+            msg: "No Items in WishList",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        for (var word in data['details']) {
+          String id = word["_id"].toString();
+          String name = word["product_name"].toString();
+          String company = word["company_name"].toString();
+          String image = word["image"].toString();
+          String description = word["description"].toString();
+          String status = word["stock_status"].toString();
+          String category = word["category"].toString();
+          String quantity = word["quantity"].toString();
+          String price = word["price"].toString();
+          String unit = word["unit"].toString();
+          setState(() {
+            lis.add(Product_model(id, image, name, company, description,
+                category, quantity, status, price, unit));
+          });
+        }
       }
+
 //var array = data['data'];
       print('RESPONCE_DATA : ' + status);
     }
@@ -117,7 +126,7 @@ class WishListState extends State<WishList> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
-      }else {
+      } else {
         Fluttertoast.showToast(
             msg: "Try sometime letter",
             toastLength: Toast.LENGTH_SHORT,
@@ -177,8 +186,7 @@ class WishListState extends State<WishList> {
                               child: Column(
                             children: <Widget>[
                               new Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                                margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                                 alignment: Alignment.topLeft,
                                 child: new Text(
                                   lis[index].name,
@@ -233,24 +241,32 @@ class WishListState extends State<WishList> {
                                     ),
                                     new Container(
                                         child: new Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         new Container(
                                           margin: EdgeInsets.fromLTRB(
                                               5.0, 3.0, 0.0, 0.0),
-                                          child: Text(lis[index].price, style:
+                                          child: Text(
+                                            lis[index].price,
+                                            style:
                                                 TextStyle(color: Colors.white),
                                           ),
                                         ),
                                         new GestureDetector(
                                             onTap: () async {
-                                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                                              Map map = {"id": '${lis[index].id}'};
+                                              SharedPreferences prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              Map map = {
+                                                "id": '${lis[index].id}'
+                                              };
                                               deletItem(Constants.DELEWISHTITEM_URL, map);
-                                                delet();
+                                              setState(() {});
                                             },
                                             child: new Container(
-                                              margin: EdgeInsets.fromLTRB(4.0, 3.0, 0.0, 0.0),
+                                              margin: EdgeInsets.fromLTRB(
+                                                  4.0, 3.0, 0.0, 0.0),
                                               child: Icon(
                                                 Icons.delete,
                                                 color: Colors.green,
@@ -271,16 +287,6 @@ class WishListState extends State<WishList> {
                   ),
                 ),
               ),
-              onTap: () {
-                Fluttertoast.showToast(
-                    msg: lis[index].name,
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIos: 1,
-                    backgroundColor: Colors.grey,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              },
             );
           }),
     );
