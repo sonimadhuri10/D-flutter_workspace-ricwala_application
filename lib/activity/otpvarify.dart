@@ -24,7 +24,6 @@ class Otpvarify extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-
   @override
   OtpvarifyState createState() => OtpvarifyState();
 }

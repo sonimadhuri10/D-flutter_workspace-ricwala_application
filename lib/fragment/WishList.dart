@@ -16,7 +16,9 @@ class WishList extends StatefulWidget {
 
 class WishListState extends State<WishList> {
   String reply = "", status = "";
+  String items = "true";
   List<Product_model> lis = List();
+  var isLoading = false;
 
   @override
   Future initState() {
@@ -32,6 +34,9 @@ class WishListState extends State<WishList> {
 
   Future<String> wishlist(String url, Map jsonMap) async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       //prefs = await SharedPreferences.getInstance();
       // var isConnect = await ConnectionDetector.isConnected();
       //  if (isConnect) {
@@ -48,7 +53,7 @@ class WishListState extends State<WishList> {
 
       if (status == "300") {
         Fluttertoast.showToast(
-            msg: "No Items in WishList",
+            msg: "Wishlist is empty",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
@@ -76,6 +81,9 @@ class WishListState extends State<WishList> {
 
 //var array = data['data'];
       print('RESPONCE_DATA : ' + status);
+      setState(() {
+        isLoading = false;
+      });
     }
     /*else {
         CustomProgressLoader.cancelLoader(context);
@@ -92,6 +100,9 @@ class WishListState extends State<WishList> {
       }
     }*/
     catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       Fluttertoast.showToast(
           msg: e.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -126,6 +137,10 @@ class WishListState extends State<WishList> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
+        setState(() {
+          lis.clear();
+          fetcwish();
+        });
       } else {
         Fluttertoast.showToast(
             msg: "Try sometime letter",
@@ -164,75 +179,56 @@ class WishListState extends State<WishList> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return new Scaffold(
-      body: ListView.builder(
-          itemCount: lis.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new GestureDetector(
-              child: Container(
+  /*  if(lis.length != 0){*/
+      return new Scaffold(
+        body: new Container(
+      child:isLoading ? Center(
+      child: new Container(
+      child:
+      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation(Colors.green),
+    strokeWidth: 5.0,
+    semanticsLabel: 'is Loading',),
+    )
+    ):
+        ListView.builder(
+            itemCount: lis.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new GestureDetector(
                 child: Container(
-                  margin: EdgeInsets.all(2.0),
-                  child: Card(
-                    child: new Container(
-                      margin: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
-                      child: new Row(
-                        children: <Widget>[
-                          new Container(
-                            child: Image(image: AssetImage('images/logo.png')),
-                            width: 100.0,
-                            height: 100.0,
-                          ),
-                          new Expanded(
-                              child: Column(
-                            children: <Widget>[
-                              new Container(
-                                margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                                alignment: Alignment.topLeft,
-                                child: new Text(
-                                  lis[index].name,
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
-                              new Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
-                                alignment: Alignment.topLeft,
-                                child: new Text(
-                                  lis[index].company,
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              new Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
-                                alignment: Alignment.topLeft,
-                                child: new Text(
-                                  lis[index].description,
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              new Container(
-                                child: new Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                  child: Container(
+                    margin: EdgeInsets.all(2.0),
+                    child: Card(
+                      child: new Container(
+                        margin: EdgeInsets.fromLTRB(5.0, 0.0, 20.0, 0.0),
+                        child: new Row(
+                          children: <Widget>[
+                            new Container(
+                              child: Image(image: AssetImage('images/ricecan.jpg')),
+                              width: 100.0,
+                              height: 100.0,
+                            ),
+                            new Expanded(
+                                child: Column(
                                   children: <Widget>[
                                     new Container(
-                                      margin: EdgeInsets.fromLTRB(
-                                          10.0, 2.0, 0.0, 0.0),
+                                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                                       alignment: Alignment.topLeft,
                                       child: new Text(
-                                        lis[index].price,
+                                        lis[index].name,
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                    new Container(
+                                      margin:
+                                      EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
+                                      alignment: Alignment.topLeft,
+                                      child: new Text(
+                                        lis[index].company,
                                         style: TextStyle(
                                             fontSize: 14.0,
                                             color: Colors.grey,
@@ -240,55 +236,94 @@ class WishListState extends State<WishList> {
                                       ),
                                     ),
                                     new Container(
-                                        child: new Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        new Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              5.0, 3.0, 0.0, 0.0),
-                                          child: Text(
-                                            lis[index].price,
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                      margin:
+                                      EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
+                                      alignment: Alignment.topLeft,
+                                      child: new Text(
+                                        lis[index].description,
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.normal),
+                                        maxLines: 3,
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ),
+                                    new Container(
+                                      child: new Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          new Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10.0, 2.0, 0.0, 0.0),
+                                            alignment: Alignment.topLeft,
+                                            child: new Text('Rs. '+
+                                                lis[index].price,
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal),
+                                            ),
                                           ),
-                                        ),
-                                        new GestureDetector(
-                                            onTap: () async {
-                                              SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              Map map = {
-                                                "id": '${lis[index].id}'
-                                              };
-                                              deletItem(Constants.DELEWISHTITEM_URL, map);
-                                              setState(() {});
-                                            },
-                                            child: new Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  4.0, 3.0, 0.0, 0.0),
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: Colors.green,
-                                              ),
-                                              height: 20.0,
-                                              width: 20.0,
-                                            )),
-                                      ],
-                                    )),
+                                          new Container(
+                                              child: new Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  new Container(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        5.0, 3.0, 0.0, 0.0),
+                                                    child: Text(
+                                                      lis[index].price,
+                                                      style:
+                                                      TextStyle(color: Colors.white),
+                                                    ),
+                                                  ),
+                                                  new GestureDetector(
+                                                      onTap: () async {
+                                                        setState(() {
+                                                          Map map = {"id": '${lis[index].id}'};
+                                                          deletItem(Constants.DELEWISHTITEM_URL, map);
+                                                        });
+                                                      },
+                                                      child: new Container(
+                                                        margin: EdgeInsets.fromLTRB(
+                                                            4.0, 3.0, 0.0, 4.0),
+                                                        child: Icon(
+                                                          Icons.delete,
+                                                          color: Colors.green,
+                                                        ),
+                                                        height: 20.0,
+                                                        width: 20.0,
+                                                      )),
+                                                ],
+                                              )),
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
-                            ],
-                          ))
-                        ],
+                                ))
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }),
-    );
+              );
+            }),
+        )
+      );
+   /* }else{
+      return Scaffold(
+          body: Container(
+            child: Center(
+              child: Text('Wishlist Is Empty',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green,fontSize: 13.0),),
+            ),
+          )
+
+      );
+    }*/
+
   }
 }

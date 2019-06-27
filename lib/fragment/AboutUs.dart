@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 import 'package:ricwala_application/model/Product_model.dart';
@@ -15,105 +15,55 @@ class AboutUs extends StatefulWidget {
 }
 
 class AboutUsState extends State<AboutUs> {
-
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return new Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.all(20.0),
-            child: Column(
+        body: Center(
+            child: ListView(
               children: <Widget>[
-                new Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Text(
-                    'Who We are',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      backgroundColor: Colors.green
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
+                SizedBox(height: 20,),
+                Text('ABOUT US',
+                  style: TextStyle(fontSize: 25, color: Colors.green),
+                  textAlign: TextAlign.center,),
+                SizedBox(height: 10),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green)
+                        ),
+                        width: 50,
+
+                      ),
+                      SizedBox(width: 5),
+                      Text('OUR STORY', style: TextStyle(fontSize: 18)),
+                      SizedBox(width: 5),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green)
+                        ),
+                        width: 50,
+                      ),
+                    ]
                 ),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Card(
-                   child: Text( 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
-                     style: TextStyle(color: Colors.black,
-                         fontSize: 15.0,
-                         fontFamily: 'Roboto:300'),
-                   ),
-                    
-                  ),
-                  
-                ),
-
-                new Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Text(
-                    'Why Choose Us',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        backgroundColor: Colors.green
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Card(
-                    child: Text( 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
-                      style: TextStyle(color: Colors.black,
-                          fontSize: 15.0,
-                          fontFamily: 'Roboto:300'),
-                    ),
-
-                  ),
-
-                ),
-
-
-                new Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Text(
-                    'Our Services',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        backgroundColor: Colors.green
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                  child: new Card(
-                    child: Text( 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
-                      style: TextStyle(color: Colors.black,
-                          fontSize: 15.0,
-                          fontFamily: 'Roboto:300'),
-                    ),
-
+                SizedBox(height: 20,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor Lorem ipsum dolor sit amet sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                    style: TextStyle(color: Colors.green, fontSize: 16),
+                    textAlign: TextAlign.justify,
                   ),
 
                 )
               ],
-            ),
-          ),
-        ),
-      ),
+            )
+
+        )
+
     );
   }
 }

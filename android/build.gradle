@@ -6,6 +6,7 @@
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.google.gms:google-services:3.0.0' // Add this line
     }
 }
 
@@ -27,3 +28,4 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

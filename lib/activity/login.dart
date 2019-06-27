@@ -61,33 +61,30 @@ class LoginState extends State<Login> {
       CustomProgressLoader.cancelLoader(context);
 
       if (status == "200") {
-
         var details=data['data'];
         String name = details['name'].toString();
         String email = details['email'].toString();
         String userid = details['_id'].toString();
-
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('loginstatus', 'true');
         prefs.setString('name', name);
         prefs.setString('email', email);
         prefs.setString('_id', userid);
-
-        Fluttertoast.showToast(
-            msg: name,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-
         Navigator.pushReplacement(
             context,
             new MaterialPageRoute(
                 builder: (BuildContext context) => HomePage()));
+      }else if(status == "400"){
+        Fluttertoast.showToast(
+            msg: "Username and password is wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
       } else if (message == "otp verification pending") {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             new MaterialPageRoute(
                 builder: (BuildContext context) =>

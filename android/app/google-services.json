@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "981898058760",
+    "firebase_url": "https://ricwal-556a3.firebaseio.com",
+    "project_id": "ricwal-556a3",
+    "storage_bucket": "ricwal-556a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981898058760:android:f0f6f7260bf19989",
+        "android_client_info": {
+          "package_name": "com.ricwalapp.ricwala_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981898058760-gkti3ottdfodqi0s1cgdj93l4mqml1p1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBopLt39aYGIFV-T6ttO9UJEkDk8bLqn3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981898058760-gkti3ottdfodqi0s1cgdj93l4mqml1p1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

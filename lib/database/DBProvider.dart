@@ -38,8 +38,6 @@ class DBProvider {
         });
   }
 
-
-
   FinalClient(String pro_id,String product_name,String product_quantity, product_price,
       String product_category) async {
     final db = await database;
@@ -57,12 +55,14 @@ class DBProvider {
       String product_category) async {
     final db = await database;
     var res = await db.query("Cart", where: "product_id = ?", whereArgs: [pro_id]);
-    return res.isNotEmpty ?
+    int con = int.parse(Client.fromMap(res.first).quantity);
+    return  con > 1 ?
     decrementClient(pro_id, product_name, product_quantity, product_price,
-        product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity) : null ;
+        product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity) :
+
+        deleteClient(pro_id, product_name);
+
   }
-
-
 
   insertClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
     final db = await database;
@@ -131,14 +131,14 @@ class DBProvider {
 */
 
 
-  updateClient(String pro_id,String product_name,String product_quantity, product_price,
-      String product_category,String tablePrice,String tableQuan) async {
+  updateClient(String pro_id,String product_name,String product_quantity,String product_price, String product_category,String tablePrice,String tableQuan) async {
     final db = await database;
-    int tabPrice = int.parse(tablePrice);
-    int price = int.parse(product_price);
-    int tabQuan = int.parse(tableQuan);
+    double tabPrice = double.parse(tablePrice);
+    double price = double.parse(product_price);
+    double tabQuan = double.parse(tableQuan);
+    double quantity = double.parse(product_quantity);
     var res =
-    db.rawUpdate("UPDATE Cart SET  quantity = '${(tabQuan+1).toString()}',price = '${(tabPrice+price).toString()}' WHERE product_id = '${pro_id}'");
+    db.rawUpdate("UPDATE Cart SET  quantity = '${(tabQuan+quantity).toString()}',price = '${(tabPrice+price).toString()}' WHERE product_id = '${pro_id}'");
     Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.green,
         textColor: Colors.white, fontSize: 16.0);
@@ -197,7 +197,16 @@ class DBProvider {
 
   deleteClient(String id, String name) async {
     final db = await database;
+    Fluttertoast.showToast(msg: "Item removed successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity:
+        ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0);
     return db.delete("Cart", where: "product_id = ? AND product_name = ?", whereArgs: [id,name]);
+
   }
 
   Future calculateTotal() async {

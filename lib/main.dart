@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:ricwala_application/activity/drawer.dart';
 import 'package:ricwala_application/activity/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'activity/startscreen.dart';
 
 void main() {
   runApp(
       new MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: new ThemeData(
           primaryColor: Colors.green,
 
@@ -28,6 +29,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp>  {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   startTime() async {
     var _duration = new Duration(seconds: 2);
     return new Timer(_duration, navigationPage);
@@ -48,6 +51,34 @@ class _MyAppState extends State<MyApp>  {
   void initState() {
     super.initState();
     startTime();
+
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+     //   _showItemDialog(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      //  _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+       // _navigateToItemDetail(message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+
+      print(token);
+    });
+
   }
 
   @override

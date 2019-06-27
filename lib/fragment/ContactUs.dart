@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 import 'package:ricwala_application/model/Product_model.dart';

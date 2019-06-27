@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 import 'package:ricwala_application/model/Product_model.dart';
@@ -24,11 +24,11 @@ class EditProfileState extends State<EditProfile> {
   TextEditingController mobile = new TextEditingController();
   TextEditingController password = new TextEditingController();
 
-  pickImageFromGallery(ImageSource source) {
+/*  pickImageFromGallery(ImageSource source) {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
-  }
+  }*/
 
   Future<String> updateUser(String url, Map jsonMap) async {
     try {

@@ -9,26 +9,31 @@ import 'package:ricwala_application/fragment/AboutUs.dart';
 import 'package:ricwala_application/fragment/ContactUs.dart';
 import 'package:ricwala_application/fragment/CustomerSupport.dart';
 import 'package:ricwala_application/fragment/EditProfile.dart';
+import 'package:ricwala_application/fragment/FragmentList.dart';
 import 'package:ricwala_application/fragment/MyCart.dart';
 import 'package:ricwala_application/fragment/MyOrder.dart';
 import 'package:ricwala_application/fragment/OrderStatus.dart';
 import 'package:ricwala_application/fragment/PrivacySetting.dart';
+import 'package:ricwala_application/fragment/S.dart';
 import 'package:ricwala_application/fragment/SearchBar.dart';
 import 'package:ricwala_application/fragment/SecuritySetting.dart';
+import 'package:ricwala_application/fragment/ShopByCategory.dart';
 import 'package:ricwala_application/fragment/TodayDeal.dart';
 import 'package:ricwala_application/fragment/WishList.dart';
 import 'package:ricwala_application/fragment/dashboardFragment.dart';
 import 'package:ricwala_application/fragment/homeFragment.dart';
+import 'package:ricwala_application/fragment/main1.dart';
 import 'package:ricwala_application/model/ClientModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';  image_picker: ^0.6.0+8
+
+import 'package:youtube_player/youtube_player.dart';
 import 'login.dart';
 import 'logout.dart';
 
 class DrawerItem {
   String title;
   IconData icon;
-
   DrawerItem(this.title, this.icon);
 }
 
@@ -37,12 +42,14 @@ class HomePage extends StatefulWidget {
     new DrawerItem("Home", Icons.home),
     new DrawerItem("My Orders", Icons.offline_pin),
     new DrawerItem("WishList", Icons.favorite),
+    new DrawerItem("Shop By Category", Icons.shopping_basket),
     new DrawerItem("Today's Deal", Icons.business),
     new DrawerItem("Order Status", Icons.strikethrough_s),
-    new DrawerItem("Privacy Setting", Icons.settings),
-    new DrawerItem("Security Setting", Icons.settings_backup_restore),
+    new DrawerItem("Farmer's work", Icons.tag_faces),
     new DrawerItem("Customer Service", Icons.settings_remote),
+    new DrawerItem("Security Setting", Icons.settings_backup_restore),
     new DrawerItem("About Us", Icons.supervised_user_circle),
+    new DrawerItem("Privacy Policy", Icons.settings),
     new DrawerItem("Contact Us", Icons.mobile_screen_share),
     new DrawerItem("Logout", Icons.power_settings_new),
   ];
@@ -58,14 +65,13 @@ class HomePageState extends State<HomePage> {
   String name = "", email = "";
   DBProvider db;
   List<Client> lis = List();
-  int count=0;
+  int count =0;
 
-
-  pickImageFromGallery(ImageSource source) {
+ /* pickImageFromGallery(ImageSource source) {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
-  }
+  }*/
 
   @override
   void initState() {
@@ -73,48 +79,47 @@ class HomePageState extends State<HomePage> {
     super.initState();
     showdata();
     total();
-    Fluttertoast.showToast(
-        msg: lis.length.toString(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    setState(() {
+
+    });
+
   }
 
    total() async {
-    setState(() async {
-      count =  await DBProvider.db.getCount();
-    });
+     var  cartitem =  await DBProvider.db.getCount();
+     setState(() => count = cartitem);
   }
-
 
   int _selectedDrawerIndex = 0;
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
+        total();
         return new dashboardFragment();
       case 1:
         return new MyOrder();
       case 2:
         return new WishList();
       case 3:
-        return new TodayDeal();
+        return new ShopByCategory();
       case 4:
-        return new OrderStatus();
+        return new TodayDeal();
       case 5:
-        return new PrivacySetting();
+        return new OrderStatus();
       case 6:
-        return new SecuritySetting();
+        return new FragmentList();
       case 7:
         return new CustomerSupport();
       case 8:
-        return new AboutUs();
+        return new SecuritySetting();
       case 9:
-        return new ContactUs();
+        return new AboutUs();
       case 10:
+        return new PrivacySetting();
+      case 11:
+        return new ContactUs();
+      case 12:
         return new Logout();
       default:
         return new Text("Error");
@@ -228,7 +233,7 @@ class HomePageState extends State<HomePage> {
               Navigator.of(context).push(
                   new MaterialPageRoute(
                       builder:(BuildContext context) =>
-                      new MyCart()
+                      new Cart('','','','','0')
                   )
               );
             },
@@ -238,7 +243,7 @@ class HomePageState extends State<HomePage> {
                   color: Colors.white,),
                   onPressed: null,
                 ),
-                lis.length == 0 ? new Container() :
+        '${count}' == 0 ? new Container() :
                 new Positioned(
                     child: new Stack(
                       children: <Widget>[
@@ -291,7 +296,7 @@ class HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(bottom: 10.0),
                 currentAccountPicture: InkWell(
                   onTap: () {
-                    pickImageFromGallery(ImageSource.gallery);
+                  //  pickImageFromGallery(ImageSource.gallery);
                   },
                   child: showImage(),
                 ),

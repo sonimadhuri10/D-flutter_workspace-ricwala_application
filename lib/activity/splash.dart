@@ -31,12 +31,7 @@ class splashState extends State<splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      /* appBar: AppBar(
-        title: Text('ShuddhH2O'),
-        backgroundColor: Colors.lightBlue,
-      ),*/
-      body:
-      new Stack(
+      body: new Stack(
         children: <Widget>[
           new Container(
             decoration: new BoxDecoration(
