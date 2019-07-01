@@ -1,42 +1,40 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ricwala_application/activity/drawer.dart';
-import 'package:ricwala_application/activity/login.dart';
-import 'package:ricwala_application/activity/signup.dart';
-import 'package:ricwala_application/comman/Connectivity.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
-import 'package:ricwala_application/fragment/ProductInfo.dart';
 import 'package:ricwala_application/model/Product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CatProductInfo extends StatefulWidget {
-  String catid,subid;
-  CatProductInfo(this.catid,this.subid);
-
+class OrderHistory extends StatefulWidget {
   @override
-  CatProductInfoState createState() => CatProductInfoState();
+  OrderHistoryState createState() => OrderHistoryState();
 }
 
-class CatProductInfoState extends State<CatProductInfo> {
+class OrderHistoryState extends State<OrderHistory> {
   String reply = "", status = "",count="";
   List<Product_model> lis = List();
   var isLoading = false;
 
+
   @override
   Future initState() {
     super.initState();
-    Map map = {
-      "categoryid": '${widget.catid}',
-      "subcategoryid": '${widget.subid}'
-    };
-    catProduct("https://polar-basin-67929.herokuapp.com/sortbycategory", map);
+    showorder();
+    count == "0";
   }
 
-  Future<String> catProduct(String url, Map jsonMap) async {
+
+  Future showorder() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map map = {"userid": '${prefs.getString('_id').toString()}'};
+    wishlist(Constants.ORDERHISTORY, map);
+  }
+
+  Future<String> wishlist(String url, Map jsonMap) async {
     try {
       setState(() {
         isLoading = true;
@@ -56,8 +54,9 @@ class CatProductInfoState extends State<CatProductInfo> {
       String status = data['status'].toString();
 
       if (status == "300") {
+        count == "true";
         Fluttertoast.showToast(
-            msg: "No any product according to your category and subcategory",
+            msg: "No any order made by you",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
@@ -65,16 +64,16 @@ class CatProductInfoState extends State<CatProductInfo> {
             textColor: Colors.white,
             fontSize: 16.0);
       } else {
-        for (var word in data['data']) {
+        for (var word in data['details']) {
           String id = word["_id"].toString();
-          String name = word["product_name"].toString();
+          String name = word["productname"].toString();
           String company = word["company_name"].toString();
           String image = word["image"].toString();
           String description = word["description"].toString();
           String status = word["stock_status"].toString();
           String category = word["productcategory"].toString();
           String quantity = word["productQuantity"].toString();
-          String price = word["price"].toString();
+          String price = word["productPrice"].toString();
           String unit = word["date"].toString();
           setState(() {
 
@@ -121,9 +120,9 @@ class CatProductInfoState extends State<CatProductInfo> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return new Scaffold(
-        appBar: AppBar(
-          title: Text('Products'),
+        appBar: new AppBar(
           backgroundColor: Colors.green,
+          title: new Text("My Orders"),
         ),
         body: new Container(
           child:isLoading ? Center(
@@ -172,7 +171,7 @@ class CatProductInfoState extends State<CatProductInfo> {
                                         EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
                                         alignment: Alignment.topLeft,
                                         child: new Text(
-                                          lis[index].company,
+                                          lis[index].category,
                                           style: TextStyle(
                                               fontSize: 14.0,
                                               color: Colors.grey,
@@ -211,16 +210,6 @@ class CatProductInfoState extends State<CatProductInfo> {
                       ),
                     ),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                productInfo(
-                                    lis[index].name, lis[index].category,
-                                    lis[index].description,
-                                    lis[index].price, lis[index].id)));
-                  },
                 );
               }),
         )
@@ -228,4 +217,3 @@ class CatProductInfoState extends State<CatProductInfo> {
 
   }
 }
-

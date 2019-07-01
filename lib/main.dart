@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp>  {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-     //   _showItemDialog(message);
+        //_showItemDialog(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp>  {
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
        // _navigateToItemDetail(message);
-      },
+       },
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
@@ -73,9 +73,11 @@ class _MyAppState extends State<MyApp>  {
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
 
+    _firebaseMessaging.getToken().then((String token) async {
+      assert(token != null);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('fcmid', token);
       print(token);
     });
 

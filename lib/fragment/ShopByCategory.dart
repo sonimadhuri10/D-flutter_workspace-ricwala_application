@@ -89,14 +89,6 @@ class ShopByCategoryState extends State<ShopByCategory> {
                 new CatProductInfo('${content.catid}','${content.subid}'),
               )
           );
-          Fluttertoast.showToast(
-              msg: '${content.catid}' +'${content.subid}',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIos: 1,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white,
-              fontSize: 16.0);
         },
         child: new ListTile(
           title: new Text(

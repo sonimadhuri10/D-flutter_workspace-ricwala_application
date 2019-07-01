@@ -181,8 +181,10 @@ class LoginState extends State<Login> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       Map map = {"mobile": '${em.text}',
-        "password": '${pass.text}'};
+        "password":'${pass.text}',
+        "device_id": prefs.getString('fcmid').toString()};
       apiRequest(Constants.LOGIN_URL, map);
     }
   }
@@ -192,10 +194,10 @@ class LoginState extends State<Login> {
     final theme = Theme.of(context);
 
     return new Scaffold(
-      /*appBar: AppBar(
-        title: new Text(""),
-        backgroundColor: Colors.blue,
-      ),*/
+      appBar: new AppBar(
+        backgroundColor: Colors.green,
+        title: new Text("Login"),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(

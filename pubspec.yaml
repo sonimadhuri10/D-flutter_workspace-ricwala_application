@@ -72,6 +72,8 @@ flutter:
   - images/thankyou.jpg
   - images/offerr.jpg
   - images/emptycart.png
+  - images/ricwallogo.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

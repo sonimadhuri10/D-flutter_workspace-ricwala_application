@@ -12,6 +12,7 @@ import 'package:ricwala_application/fragment/EditProfile.dart';
 import 'package:ricwala_application/fragment/FragmentList.dart';
 import 'package:ricwala_application/fragment/MyCart.dart';
 import 'package:ricwala_application/fragment/MyOrder.dart';
+import 'package:ricwala_application/fragment/OrderHistory.dart';
 import 'package:ricwala_application/fragment/OrderStatus.dart';
 import 'package:ricwala_application/fragment/PrivacySetting.dart';
 import 'package:ricwala_application/fragment/S.dart';
@@ -219,14 +220,12 @@ class HomePageState extends State<HomePage> {
         onTap: () => _onSelectItem(i),
       ));
     }
-
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.green,
-        title: new Text("Ricwal"),
+        title: new Image.asset('images/ricwallogo.png', fit: BoxFit.fill,alignment: Alignment.topRight,),
         actions: <Widget>[
-
-      new Container(
+         new Container(
           margin: EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 0.0),
           child: new GestureDetector(
             onTap: () {
@@ -243,7 +242,7 @@ class HomePageState extends State<HomePage> {
                   color: Colors.white,),
                   onPressed: null,
                 ),
-        '${count}' == 0 ? new Container() :
+               '${count}' == 0 ? new Container() :
                 new Positioned(
                     child: new Stack(
                       children: <Widget>[
@@ -271,7 +270,6 @@ class HomePageState extends State<HomePage> {
             ),
           )
       ),
-
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
@@ -283,7 +281,12 @@ class HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: Icon(Icons.notifications_active, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (BuildContext context) => OrderHistory()));
+            },
           ),
         ],
       ),

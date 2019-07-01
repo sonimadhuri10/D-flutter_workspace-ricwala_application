@@ -167,7 +167,7 @@ class MyOrderState extends State<MyOrder> {
                                      EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
                                      alignment: Alignment.topLeft,
                                      child: new Text(
-                                       lis[index].category,
+                                       lis[index].company,
                                        style: TextStyle(
                                            fontSize: 14.0,
                                            color: Colors.grey,
@@ -178,7 +178,7 @@ class MyOrderState extends State<MyOrder> {
                                      margin:
                                      EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 0.0),
                                      alignment: Alignment.topLeft,
-                                     child: new Text(
+                                     child: new Text('Rs.'+
                                        lis[index].price,
                                        style: TextStyle(
                                            fontSize: 14.0,

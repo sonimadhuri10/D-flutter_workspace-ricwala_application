@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 //import 'package:image_picker/image_picker.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
@@ -10,6 +11,7 @@ import 'package:ricwala_application/fragment/main1.dart';
 import 'package:ricwala_application/model/Product_model.dart';
 import 'package:ricwala_application/model/VideoModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_player/youtube_player.dart';
 
 import 'ImageScreen.dart';
 
@@ -19,18 +21,15 @@ class FragmentList extends StatefulWidget {
 }
 
 class FragmentListState extends State<FragmentList> {
-  String reply = "", status = "",count="";
+  String reply = "", status = "", count = "";
   List<VideoModel> lis = List();
   var isLoading = false;
-
 
   @override
   Future initState() {
     super.initState();
     farmerwork();
-
   }
-
 
   Future farmerwork() async {
     firmwork(Constants.FARMERWORK_URL);
@@ -57,7 +56,7 @@ class FragmentListState extends State<FragmentList> {
       if (status == "300") {
         count == "true";
         Fluttertoast.showToast(
-            msg: "No any order made by you",
+            msg: "No any video found",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
@@ -114,68 +113,144 @@ class FragmentListState extends State<FragmentList> {
     final theme = Theme.of(context);
     return new Scaffold(
         body: new Container(
-          child:isLoading ? Center(
+      child: isLoading
+          ? Center(
               child: new Container(
-                child:
-                CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation(Colors.green),
-                  strokeWidth: 5.0,
-                  semanticsLabel: 'is Loading',),
-              )
-          ):
-          ListView.builder(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation(Colors.green),
+                strokeWidth: 5.0,
+                semanticsLabel: 'is Loading',
+              ),
+            ))
+          : ListView.builder(
               itemCount: lis.length,
               itemBuilder: (BuildContext context, int index) {
-                return new GestureDetector(
-                  child: Container(
+
+                if (lis[index].type == "video") {
+                  return new GestureDetector(
                     child: Container(
-                      margin: EdgeInsets.all(2.0),
-                      child: Card(
-                       child: Column(
-                         children: <Widget>[
-                          new Container(
-                            alignment: Alignment.topLeft,
-                            margin: EdgeInsets.fromLTRB(5.0, 10.0, 10.0, 0.0),
-                            child: Text(lis[index].title,style: TextStyle(fontSize: 15.0,
-                              color: Colors.black,fontWeight: FontWeight.normal),),
-                           ),
-                           new Container(
+                      child: Container(
+                        margin: EdgeInsets.all(2.0),
+                        child: Card(
+                          child: Column(
+                            children: <Widget>[
+                              new Container(
+                                alignment: Alignment.topLeft,
+                                margin: EdgeInsets.fromLTRB(5.0, 10.0, 10.0, 0.0),
+                                child: Text(
+                                  lis[index].title,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal),
+                                 ),
+                              ),
+                              /* new Container(
                              alignment: Alignment.topLeft,
                              margin: EdgeInsets.fromLTRB(5.0, 8.0, 10.0, 0.0),
                              child: Text(lis[index].link,style: TextStyle(fontSize: 12.0,
                                  color: Colors.green,fontWeight: FontWeight.normal,),
                                textAlign: TextAlign.justify,),
-                           ),
-                          new Container(
-                            alignment: Alignment.topRight,
-                            margin: EdgeInsets.fromLTRB(5.0, 5.0, 10.0, 5.0),
-                            child: Text('View '+lis[index].type,style: TextStyle(fontSize: 12.0,
-                              color: Colors.blue,fontWeight: FontWeight.bold,),),
-                          ),
-                         ],
-                       ),
+                           ),*/
+                              new Container(
+                                alignment: Alignment.topLeft,
+                                margin: EdgeInsets.fromLTRB(5.0, 8.0, 5.0, 0.0),
+                                child: YoutubePlayer(
+                                  context: context,
+                                  source: '${lis[index].link}',
+                                  quality: YoutubeQuality.HD,
+                                  aspectRatio: 16 / 9,
+                                  autoPlay: false,
+                                  loop: false,
+                                  reactToOrientationChange: true,
+                                  startFullScreen: false,
+                                  controlsActiveBackgroundOverlay: true,
+                                  controlsTimeOut: Duration(seconds: 4),
+                                  playerMode: YoutubePlayerMode.DEFAULT,
+                                  onError: (error) {
+                                    print(error);
+                                  },
+                                ),
+                                height: 150.0,
+                                width: double.infinity,),
 
+                              new Container(
+                                alignment: Alignment.topRight,
+                                margin: EdgeInsets.fromLTRB(5.0, 5.0, 10.0, 5.0),
+                                child: Text(
+                                  "",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  onTap: () {
-                    if(lis[index].type == "video") {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  Main1(lis[index].link)));
-                    }else{
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ImageScreen(lis[index].link)));
-                    }
-                  },
-                );
-              }),
-        )
-    );
 
+                  );
+
+                } else {
+                  return new GestureDetector(
+                    child: Container(
+                      child: Container(
+                        margin: EdgeInsets.all(2.0),
+                        child: Card(
+                          child: Column(
+                            children: <Widget>[
+                              new Container(
+                                alignment: Alignment.topLeft,
+                                margin: EdgeInsets.fromLTRB(5.0, 10.0, 10.0, 0.0),
+                                child: Text(
+                                  lis[index].title,
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                              /* new Container(
+                             alignment: Alignment.topLeft,
+                             margin: EdgeInsets.fromLTRB(5.0, 8.0, 10.0, 0.0),
+                             child: Text(lis[index].link,style: TextStyle(fontSize: 12.0,
+                                 color: Colors.green,fontWeight: FontWeight.normal,),
+                               textAlign: TextAlign.justify,),
+                           ),*/
+
+                              new Container(
+                                alignment: Alignment.topLeft,
+                                margin: EdgeInsets.fromLTRB(5.0, 8.0, 5.0, 0.0),
+                                child: Image.asset(lis[index].link, fit: BoxFit.cover,),
+
+                                height: 150.0,
+                                width: double.infinity,),
+
+                              new Container(
+                                alignment: Alignment.topRight,
+                                margin: EdgeInsets.fromLTRB(5.0, 5.0, 10.0, 5.0),
+                                child: Text(
+                                  "",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  );
+
+                }
+              }),
+    ));
   }
 }

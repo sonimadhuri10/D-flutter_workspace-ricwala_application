@@ -30,7 +30,6 @@ class CoupanListState extends State<CoupanList> {
     fetcwish();
   }
 
-
   Future fetcwish() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map map = {"page": '1'};

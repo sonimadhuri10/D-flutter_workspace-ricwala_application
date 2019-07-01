@@ -95,7 +95,7 @@ class productInfoState extends State<productInfo> {
                       margin: EdgeInsets.fromLTRB(25.0, 10.0, 0.0, 0.0),
                       alignment: Alignment.topLeft,
                       child: new Text(
-                        'Category :',
+                        'Company :',
                         style: TextStyle(
                             fontSize: 15.0,
                             color: Colors.black,
@@ -176,7 +176,7 @@ class productInfoState extends State<productInfo> {
                             onChange: (newValue) {
                               setState(() {
                                 spinner = newValue;
-                                total = int.tryParse('${widget.price}') * spinner;
+                                total = double.tryParse('${widget.price}') * spinner;
                               });
                             },
                           ),
@@ -221,7 +221,7 @@ class productInfoState extends State<productInfo> {
                 color: Colors.deepOrange,
                 onPressed: () {
                   DBProvider.db.FinalClient('${widget.id}', '${widget.name}',
-                      spinner.toString(), total.toString(), '${widget.category}');
+                      spinner.toString(), total.toString(), '${widget.category}','${widget.description}');
                   Future.delayed(const Duration(milliseconds: 2000), () {
                     setState(() {
                       Navigator.of(context).pushReplacement(

@@ -28,6 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 
 import 'CheckOutPage.dart';
+import 'ProductInfo.dart';
 
 class Cart extends StatefulWidget {
   static final String route = "Cart-route";
@@ -278,7 +279,8 @@ class CartState extends State<Cart> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         Client item = snapshot.data[index];
-                        return new Container(
+                        return new GestureDetector(
+                          child: Container(
                           child: new Card(
                             margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                             child: new Row(
@@ -397,6 +399,17 @@ class CartState extends State<Cart> {
                               ],
                             ),
                           ),
+                        ), onTap: () {
+                           double pr = double.parse(item.price)/double.parse(item.quantity);
+                          Navigator.pushReplacement(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      productInfo(
+                                          item.product_name, item.category,
+                                          item.description,
+                                          pr.toString(),item.product_id)));
+                        },
                         );
                       },
                     ),
@@ -410,7 +423,7 @@ class CartState extends State<Cart> {
                           children: <Widget>[
                             new GestureDetector(
                                 onTap: () async {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       new MaterialPageRoute(
                                           builder: (BuildContext
@@ -451,8 +464,6 @@ class CartState extends State<Cart> {
                                   setState(() => coupan = '');
                                   setState(() => paid_amount = carttotal);
                                   setState(() => discount_amount = 0.0);*/
-
-
                                 },
                                 child: new Container(
                                     child: new Container(
@@ -469,94 +480,6 @@ class CartState extends State<Cart> {
                       ),
 
                   ),
-
-
-
-
-                /*  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white12,
-                            border: Border(
-                              bottom:
-                              BorderSide(color: Colors.grey[100], width: 1.0),
-                              top:
-                              BorderSide(color: Colors.grey[100], width: 1.0),
-                            )),
-                        height: 80.0,
-                        child: Center(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 20.0, left: 5.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    5.0, 0.0, 3.0, 0.0),
-                                                width: 40.0,
-                                                alignment: Alignment.topLeft,
-                                                child: RaisedButton(
-                                                  color: Colors.blue,
-                                                  onPressed: () {
-                                                    if (carttotal == 0.0) {
-                                                      Fluttertoast.showToast(
-                                                          msg: "Cart Is Empty",
-                                                          toastLength: Toast.LENGTH_SHORT,
-                                                          gravity: ToastGravity.BOTTOM,
-                                                          timeInSecForIos: 1,
-                                                          backgroundColor: Colors.green,
-                                                          textColor: Colors.white,
-                                                          fontSize: 16.0);
-                                                    }else{
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                              builder: (BuildContext
-                                                              context) =>
-                                                                  CoupanList()));
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    "Apply Coupan",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
-                                                width: double.infinity,
-                                                child: Text('${coupan}',style: TextStyle(fontSize: 15.0,
-                                                    fontWeight: FontWeight.normal,
-                                                    color: Colors.black),),
-                                               // ignore: extra_positional_arguments_could_be_named
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),*/
-
-
                   new Container(
                       child: new Card(
                         margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -580,8 +503,7 @@ class CartState extends State<Cart> {
                                   margin: EdgeInsets.fromLTRB(0.0, 2.0, 50.0, 0.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
-                                    "Rs."
-                                        '${carttotal}',
+                                    "Rs."'${carttotal}',
                                     style: TextStyle(
                                         fontSize: 15.0,
                                         color: Colors.green,
@@ -623,8 +545,7 @@ class CartState extends State<Cart> {
                                 new Container(
                                   margin: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 2.0),
                                   alignment: Alignment.topLeft,
-                                  child: new Text(
-                                    'Paid Amount :',
+                                  child: new Text('Paid Amount :',
                                     style: TextStyle(
                                         fontSize: 15.0,
                                         color: Colors.black,
@@ -635,8 +556,7 @@ class CartState extends State<Cart> {
                                   margin: EdgeInsets.fromLTRB(0.0, 2.0, 50.0, 2.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
-                                    "Rs."
-                                        '${paid_amount}',
+                                    "Rs."'${paid_amount}',
                                     style: TextStyle(
                                         fontSize: 15.0,
                                         color: Colors.green,

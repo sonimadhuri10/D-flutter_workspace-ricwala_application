@@ -466,7 +466,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                               new MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       productInfo(
-                                          lis[index].name, lis[index].category,
+                                          lis[index].name, lis[index].company,
                                           lis[index].description,
                                           lis[index].price, lis[index].id)));
                         },

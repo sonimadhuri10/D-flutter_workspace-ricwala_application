@@ -16,6 +16,7 @@ class Client {
   String quantity;
   String price;
   String category;
+  String description;
 
   Client({
     this.id,
@@ -24,6 +25,7 @@ class Client {
     this.quantity,
     this.price,
     this.category,
+    this.description,
   });
 
   factory Client.fromMap(Map<String, dynamic> json) => new Client(
@@ -33,6 +35,7 @@ class Client {
     quantity: json["quantity"],
     price: json["price"],
     category: json["category"],
+    description: json["description"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -42,5 +45,6 @@ class Client {
     "quantity": quantity,
     "price": price,
     "category": category,
+    "description": description,
   };
 }

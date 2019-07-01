@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 import 'package:ricwala_application/database/DBProvider.dart';
+import 'package:ricwala_application/fragment/ProductInfo.dart';
 import 'package:ricwala_application/model/Product_model.dart';
 
 class SearchBar extends StatefulWidget {
@@ -36,7 +37,6 @@ class SearchBarState extends State<SearchBar> {
     Map map = {
       "page": "1",
     };
-
     setState(() {
       _dropdownValues.add("Search by Category");
     });
@@ -437,6 +437,16 @@ class SearchBarState extends State<SearchBar> {
                               ),
                             ),
                           ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        productInfo(
+                                            lis[index].name, lis[index].category,
+                                            lis[index].description,
+                                            lis[index].price, lis[index].id)));
+                          },
                         );
                       }),
             ),

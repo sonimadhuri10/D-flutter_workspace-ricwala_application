@@ -33,20 +33,21 @@ class DBProvider {
               "product_name TEXT,"
               "quantity TEXT,"
               "price TEXT,"
-              "category TEXT"
+              "category TEXT,"
+              "description TEXT"
               ")");
         });
   }
 
   FinalClient(String pro_id,String product_name,String product_quantity, product_price,
-      String product_category) async {
+      String product_category,String product_description) async {
     final db = await database;
     var res = await db.query("Cart", where: "product_id = ?", whereArgs: [pro_id]);
     return res.isNotEmpty ?
         updateClient(pro_id, product_name, product_quantity, product_price,
             product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity)
         :
-      insertClient(pro_id, product_name, product_quantity, product_price, product_category)
+      insertClient(pro_id, product_name, product_quantity, product_price, product_category,product_description)
     ;
   }
 
@@ -59,26 +60,27 @@ class DBProvider {
     return  con > 1 ?
     decrementClient(pro_id, product_name, product_quantity, product_price,
         product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity) :
-
         deleteClient(pro_id, product_name);
 
   }
 
-  insertClient(String pro_id,String product_name,String product_quantity,String product_price,String product_category) async {
+  insertClient(String pro_id,String product_name,String product_quantity,
+      String product_price,String product_category,String product_description) async {
     final db = await database;
     //get the biggest id in the table
     var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Cart");
     int id = table.first["id"];
     //insert to the table using the new id
     var raw = await db.rawInsert(
-        "INSERT Into Cart (id,product_id,product_name,quantity,price,category)"
-            " VALUES (?,?,?,?,?,?)",
+        "INSERT Into Cart (id,product_id,product_name,quantity,price,category,description)"
+            " VALUES (?,?,?,?,?,?,?)",
         [id,
         pro_id,
         product_name,
         product_quantity,
         product_price,
-        product_category
+        product_category,
+        product_description
         ]);
 
     Fluttertoast.showToast(msg: "Add In Your Cart",

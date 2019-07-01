@@ -7,6 +7,7 @@ import 'package:ricwala_application/activity/login.dart';
 import 'package:ricwala_application/comman/Connectivity.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class signup extends StatefulWidget {
   signup({Key key, this.title}) : super(key: key);
@@ -71,7 +72,7 @@ class signupState extends State<signup> {
             backgroundColor: Colors.grey,
             textColor: Colors.white,
             fontSize: 16.0);
-        Navigator.push(context,
+             Navigator.push(context,
             new MaterialPageRoute(builder: (BuildContext context) => Login()));
         return reply;
       } else if (message == "Duplicate record") {
@@ -120,7 +121,7 @@ class signupState extends State<signup> {
     }
   }
 
-  void validation() {
+  Future validation() async {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
@@ -189,12 +190,14 @@ class signupState extends State<signup> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+       String did = prefs.getString('fcmid').toString();
       Map map = {
         "name": '${name.text}',
         "email": '${email.text}',
         "mobile": '${mobile.text}',
         "imei": '68786867668',
-        "device_id": 'hvujyhuyfiuygi',
+        "device_id": did,
         "password": '${password.text}'
       };
       apiRequest(Constants.SIGNUP_URL, map);
@@ -206,10 +209,10 @@ class signupState extends State<signup> {
     final theme = Theme.of(context);
 
     return new Scaffold(
-      /*appBar: AppBar(
-        title: new Text(""),
-        backgroundColor: Colors.blue,
-      ),*/
+      appBar: new AppBar(
+        backgroundColor: Colors.green,
+        title: new Text("Signup"),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
