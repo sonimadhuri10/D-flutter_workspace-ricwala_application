@@ -3,16 +3,17 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_places_dialog/flutter_places_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
-import 'package:ricwala_application/comman/Connectivity.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
+import 'package:ricwala_application/comman/LocationData.dart';
 import 'package:ricwala_application/database/DBProvider.dart';
 import 'package:ricwala_application/fragment/ProductInfo.dart';
 import 'package:ricwala_application/model/Product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/services.dart';
 
 class dashboardFragment extends StatefulWidget {
   @override
@@ -22,20 +23,26 @@ class dashboardFragment extends StatefulWidget {
 class dashboardFragmentState extends State<dashboardFragment> {
   String reply = "", status = "";
   var isLoading = false;
-
+  String _placeName = 'Your Location';
+ PlaceDetails _place=null,_destinationPlace=null;
+ PlaceDetails place,placeDestination;
   List<Product_model> lis = List();
   List<Product_model> addlist = List();
   DBProvider db;
   TextEditingController count = TextEditingController();
   Drawer home;
   int _itemCount  = 1;
-
+  var currentLocation = LocationData;
+String pickUpLocation="Enter Location";
+bool pickUpBool=true;
   @override
   void initState() {
     super.initState();
+    FlutterPlacesDialog.setGoogleApiKey("AIzaSyCnrQ33dccN8jKIZx9JfQzhDpv-1bfuqL0");
     Map map = {"page": '${_itemCount}'};
     apiRequest(Constants.PRODUCTLIST_URL, map);
   }
+
 
   void increment(){
     setState(() => _itemCount = _itemCount+1);
@@ -123,8 +130,43 @@ class dashboardFragmentState extends State<dashboardFragment> {
     }
   }
 
+  _showAutocomplete() async {
+
+    if (pickUpBool) {
+      try {
+        setState(() {
+          pickUpBool = false;
+        });
+        place = await FlutterPlacesDialog.getPlacesDialog();
+      } on PlatformException {
+        place = null;
+        setState(() {
+          pickUpBool = true;
+        });
+      }
+      if (!mounted) return;
+      print("$place");
+      setState(() {
+        _place = place;
+        if (_place == null) {
+          pickUpLocation = 'Enter Your Pick Up Location';
+          setState(() {
+            pickUpBool = true;
+          });
+        } else {
+          pickUpLocation = '${_place.name}, ${_place.address}';
+          setState(() {
+            _placeName = pickUpLocation;
+            pickUpBool = true;
+          });
+        }
+      });
+    }
+  }
+
   Future<String> addWishlist(String url, Map jsonMap) async {
     try {
+
       //prefs = await SharedPreferences.getInstance();
       // var isConnect = await ConnectionDetector.isConnected();
       //  if (isConnect) {
@@ -151,6 +193,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
+
       } else if (message == "Duplicate record") {
         Fluttertoast.showToast(
             msg: "Already Exists",
@@ -186,6 +229,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
       }
     }*/
     catch (e) {
+
       Fluttertoast.showToast(
           msg: e.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -194,6 +238,28 @@ class dashboardFragmentState extends State<dashboardFragment> {
           fontSize: 16.0);
     }
   }
+
+ /* Future location() async {
+    var location = new Location();
+    try {
+      currentLocation = (await location.getLocation()) as Type;
+    // ignore: non_type_in_catch_clause
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        var error = 'Permission denied';
+      }
+      currentLocation = null;
+    }
+
+    Fluttertoast.showToast(
+        msg: currentLocation.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -219,8 +285,39 @@ class dashboardFragmentState extends State<dashboardFragment> {
         body: new SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              new Container(
+                margin: EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                   /* border: Border(top: BorderSide(color: Colors.grey, width: 1.0))*/
+
+                ),
+                child:Row(
+                  children: <Widget>[
+                    new Container(
+                      margin: EdgeInsets.fromLTRB(2.0, 5.0, 3.0, 5.0),
+                      child: Icon(Icons.location_on,color: Colors.white),width: 30.0,height: 30.0,
+                    ),
+                    new Expanded(child:
+                    new Container(
+                      margin: EdgeInsets.fromLTRB(2.0, 5.0, 3.0, 5.0),
+                      alignment: Alignment.center,
+                      child: FlatButton(
+                        onPressed: _showAutocomplete,
+                        child: Text(_placeName,
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white,fontSize: 15.0),
+                        ),
+                      ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               new SizedBox(
-                  height: 150.0,
+                  height: 170.0,
                   width: double.infinity,
                   child: new Carousel(
                     images: [
@@ -318,7 +415,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                           'Name :',
                                           style: TextStyle(
                                               fontSize: 13.0,
-                                              color: Colors.grey,
+                                              color: Colors.black,
                                               fontWeight: FontWeight
                                                   .normal),
                                         ),
@@ -330,7 +427,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                             lis[index].name,
                                           style: TextStyle(
                                               fontSize: 13.0,
-                                              color: Colors.black,
+                                              color: Colors.grey,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -345,7 +442,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                           'Brand :',
                                           style: TextStyle(
                                               fontSize: 13.0,
-                                              color: Colors.grey,
+                                              color: Colors.black,
                                               fontWeight: FontWeight
                                                   .normal),
                                         ),
@@ -357,7 +454,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                           lis[index].company,
                                           style: TextStyle(
                                               fontSize: 13.0,
-                                              color: Colors.black,
+                                              color: Colors.grey,
                                               fontWeight: FontWeight
                                                   .normal),
                                         ),
@@ -378,7 +475,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                                 'Price :',
                                                 style: TextStyle(
                                                     fontSize: 13.0,
-                                                    color: Colors.grey,
+                                                    color: Colors.black,
                                                     fontWeight: FontWeight
                                                         .normal),
                                               ),
@@ -390,7 +487,7 @@ class dashboardFragmentState extends State<dashboardFragment> {
                                                 lis[index].price,
                                                 style: TextStyle(
                                                     fontSize: 13.0,
-                                                    color: Colors.black,
+                                                    color: Colors.green,
                                                     fontWeight: FontWeight
                                                         .normal),
                                               ),

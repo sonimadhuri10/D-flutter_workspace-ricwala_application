@@ -20,7 +20,8 @@ class CoupanList extends StatefulWidget {
 class CoupanListState extends State<CoupanList> {
   String reply = "", status = "";
   List<CoupanModel> lis = List();
-  int carttotal=0,price = 0;
+  int price = 0;
+  double peramt = 0.0,carttotal=0.0;
   DBProvider db ;
   var isLoading = false ;
 
@@ -28,6 +29,16 @@ class CoupanListState extends State<CoupanList> {
   Future initState() {
     super.initState();
     fetcwish();
+    cal();
+  }
+
+  Future cal() async {
+    var total = (await DBProvider.db.calculateTotal())[0]['Total'];
+    setState(() {
+      if(total != null){
+        setState(() => carttotal = total);
+      }
+    });
   }
 
   Future fetcwish() async {
@@ -143,10 +154,6 @@ class CoupanListState extends State<CoupanList> {
     semanticsLabel: 'is Loading',),
     )
     ):
-
-
-
-
       ListView.builder(
           itemCount: lis.length,
           itemBuilder: (BuildContext context, int index) {
@@ -233,12 +240,32 @@ class CoupanListState extends State<CoupanList> {
                 ),
               ),
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(
-                        builder:(BuildContext context) =>
-                        new Cart(lis[index].id,lis[index].name,lis[index].code,lis[index].type,lis[index].amount)
-                    )
-                );
+                if(lis[index].type == "Rupess" && carttotal>double.parse(lis[index].amount)){
+                  Navigator.of(context).pushReplacement(
+                      new MaterialPageRoute(
+                          builder:(BuildContext context) =>
+                          new Cart(lis[index].id,lis[index].name,lis[index].code,lis[index].type,lis[index].amount)
+                      )
+                  );
+                }else if(lis[index].type == "percent"){
+                  peramt = (carttotal*double.parse(lis[index].amount))/100.0 ;
+                  Navigator.of(context).pushReplacement(
+                      new MaterialPageRoute(
+                          builder:(BuildContext context) =>
+                          new Cart(lis[index].id,lis[index].name,lis[index].code,lis[index].type,peramt.toString())
+                      )
+                  );
+                }
+                else{
+                  Fluttertoast.showToast(
+                      msg: "Sorry you cant apply this coupan",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
               },
             );
           }),

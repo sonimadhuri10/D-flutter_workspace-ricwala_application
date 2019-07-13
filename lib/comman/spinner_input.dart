@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-
-/// Spinner Input like HTML5 spinners
 class SpinnerButtonStyle {
   Color color;
 

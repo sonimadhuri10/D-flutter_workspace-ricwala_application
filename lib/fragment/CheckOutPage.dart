@@ -29,10 +29,18 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
   TextEditingController em = new TextEditingController();
   TextEditingController land = new TextEditingController();
   TextEditingController pin = new TextEditingController();
-   String radiovalue = "";
+   String radiovalue = "",address="";
   String reply;
   DBProvider db ;
 
+
+  @override
+  Future initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {});
+    _add();
+  }
 
   Future  checkout(_context) async {
 
@@ -150,14 +158,12 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
       return reply;
     }
   }
-
   String _randomString(int length) {
     var rand = new Random();
     var codeUnits = new List.generate(length, (index){
       return rand.nextInt(33)+89;
     }
     );}
-
   startPayment(double amount,_context) async {
     var uniq = _randomString(10);
  //   var isConnect = await ConnectionDetector.isConnected();
@@ -217,7 +223,6 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
           fontSize: 16.0);
     }*/
   }
-
   Future<String> apiCallForUserProfile(String url, Map jsonMap) async {
     CustomProgressLoader.showLoader(context);
  //   var isConnect = await ConnectionDetector.isConnected();
@@ -301,6 +306,78 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
     }*/
   }
 
+  Future<String> add(String url, Map jsonMap) async {
+    try {
+      CustomProgressLoader.showLoader(context);
+      //prefs = await SharedPreferences.getInstance();
+      // var isConnect = await ConnectionDetector.isConnected();
+      //  if (isConnect) {
+      HttpClient httpClient = new HttpClient();
+      HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+      request.headers.set('content-type', 'application/json');
+      request.add(utf8.encode(json.encode(jsonMap)));
+      HttpClientResponse response = await request.close();
+      // todo - you should check the response.statusCode
+      reply = await response.transform(utf8.decoder).join();
+      httpClient.close();
+      Map data = json.decode(reply);
+      String status = data['status'].toString();
+      CustomProgressLoader.cancelLoader(context);
+
+      if (status == "200") {
+        var details=data['result'];
+        String address = details['address'].toString();
+        String landmark = details['landmark'].toString();
+        String pincode = details['pincode'].toString();
+        em.text = address;
+        land.text = landmark ;
+        pin.text = pincode ;
+      } else {
+        Fluttertoast.showToast(
+            msg: "Try Again Some Thing Is Wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    }
+    /*else {
+        CustomProgressLoader.cancelLoader(context);
+        Fluttertoast.showToast(
+            msg: "Please check your internet connection....!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // ToastWrap.showToast("Please check your internet connection....!");
+        // return response;
+      }
+    }*/
+    catch (e) {
+      CustomProgressLoader.cancelLoader(context);
+      print(e);
+      Fluttertoast.showToast(
+          msg: e.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return reply;
+    }
+  }
+
+ Future _add() async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   Map map = {"id": prefs.getString('_id').toString()};
+   add(Constants.ADDRESS_URL, map);
+ }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -322,14 +399,13 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
                       fontSize: 15.0,
                       color: Colors.black,
                       fontWeight: FontWeight.normal),
-                ),
+                 ),
               ),
               new Container(
                   child: new Card(
                 margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                 child: Column(
                   children: <Widget>[
-
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -403,9 +479,8 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
                         new Container(
                           margin: EdgeInsets.fromLTRB(0.0, 5.0, 50.0, 5.0),
                           alignment: Alignment.topLeft,
-                          child: new Text(
-                            "Rs."
-                            '${widget.paid}',
+                          child: new Text("Rs."
+                             '${widget.paid}',
                             style: TextStyle(
                                 fontSize: 15.0,
                                 color: Colors.green,
@@ -458,6 +533,7 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
                 margin: EdgeInsets.fromLTRB(25.0, 3.0, 25.0, 10.0),
                 child: new TextField(
                   controller: pin,
+                  keyboardType: TextInputType.number,
                   textAlign: TextAlign.start,
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -488,7 +564,6 @@ class CheckOutPgaeState extends State<CheckOutPgae> {
                    onSelected: (String selected) => radiovalue = selected
                ),
               ),
-
               new Container(
                 margin: EdgeInsets.fromLTRB(35.0, 20.0, 35.0, 0.0),
                 child: new Material(

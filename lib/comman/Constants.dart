@@ -20,5 +20,5 @@ class Constants{
   static final String COUPAN_URL = BaseURL+"/couponList/get";
   static final String SHOPBY_CATEGORY_URL = BaseURL+"/sortbycategory";
   static final String FARMERWORK_URL = BaseURL+"/firmworks";
-
+  static final String ADDRESS_URL = BaseURL+"/loginWebService/userdetail";
 }

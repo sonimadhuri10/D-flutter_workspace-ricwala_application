@@ -245,11 +245,9 @@ class CartState extends State<Cart> {
     return new String.fromCharCodes(codeUnits);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    if(carttotal!=0.0){
+    if (carttotal != 0.0) {
       return Scaffold(
         appBar: new AppBar(
           backgroundColor: Colors.green,
@@ -270,7 +268,8 @@ class CartState extends State<Cart> {
         ),
         body: FutureBuilder<List<Client>>(
           future: DBProvider.db.getAllClients(),
-          builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<List<Client>> snapshot) {
             if (snapshot.hasData) {
               return Column(
                 children: [
@@ -281,126 +280,138 @@ class CartState extends State<Cart> {
                         Client item = snapshot.data[index];
                         return new GestureDetector(
                           child: Container(
-                          child: new Card(
-                            margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                new Card(
-                                  margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                                  child: Image(
-                                    image: AssetImage('images/ricecan.jpg'),
-                                    height: 80.0,
-                                    width: 80.0,
+                            child: new Card(
+                              margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: <Widget>[
+                                  new Card(
+                                    margin: EdgeInsets.fromLTRB(
+                                        5.0, 5.0, 5.0, 5.0),
+                                    child: Image(
+                                      image: AssetImage('images/ricecan.jpg'),
+                                      height: 80.0,
+                                      width: 80.0,
+                                    ),
                                   ),
-                                ),
-                                new Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        new Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              10.0, 0.0, 0.0, 0.0),
-                                          alignment: Alignment.topLeft,
-                                          child: new Text(
-                                            item.product_name,
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold,
+                                  new Expanded(
+                                      child: Column(
+                                        children: <Widget>[
+                                          new Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10.0, 0.0, 0.0, 0.0),
+                                            alignment: Alignment.topLeft,
+                                            child: new Text(
+                                              item.product_name,
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.right,
                                             ),
-                                            textAlign: TextAlign.right,
                                           ),
-                                        ),
-                                        new Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              10.0, 0.0, 0.0, 0.0),
-                                          child: new Row(
-                                            children: <Widget>[
-                                              new Container(
-                                                child: new Text(
-                                                  "Quantity",
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    color: Colors.green,
-                                                    fontWeight: FontWeight.normal,
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              ),
-                                              new Container(
-                                                margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                                                child: new Icon(
-                                                  Icons.linear_scale,
-                                                  color: Colors.green,
-                                                ),
-                                              ),
-                                              new Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    10.0, 0.0, 0.0, 0.0),
-                                                child: new Text(
-                                                  item.quantity,
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    color: Colors.green,
-                                                    fontWeight: FontWeight.normal,
-                                                  ),
-                                                  textAlign: TextAlign.right,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        new Container(
-                                          child: new Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              new Row(
-                                                children: <Widget>[
-                                                  new Container(
-                                                    margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                                                    child: new Text('Rs. '+
-                                                        item.price,
-                                                      style: TextStyle(
-                                                        fontSize: 18.0,
-                                                        color: Colors.green,
-                                                        fontWeight: FontWeight.normal,
-                                                      ),
-                                                      textAlign: TextAlign.right,
+                                          new Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10.0, 0.0, 0.0, 0.0),
+                                            child: new Row(
+                                              children: <Widget>[
+                                                new Container(
+                                                  child: new Text(
+                                                    "Quantity",
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight
+                                                          .normal,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                              new GestureDetector(
-                                                  onTap: () async {
-                                                    DBProvider.db.deleteClient(
-                                                        item.product_id,
-                                                        item.product_name);
-                                                    _calcTotal();
-                                                    setState(() {
-                                                    });
-                                                  },
-                                                  child: new Container(
-                                                      child: new Container(
-                                                        margin: EdgeInsets.fromLTRB(
-                                                            0.0, 3.0, 10.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          color: Colors.green,
-                                                        ),
-                                                        height: 20.0,
-                                                        width: 20.0,
-                                                      ))),
-                                            ],
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                ),
+                                                new Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      10.0, 0.0, 0.0, 0.0),
+                                                  child: new Icon(
+                                                    Icons.linear_scale,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                                new Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      10.0, 0.0, 0.0, 0.0),
+                                                  child: new Text(
+                                                    item.quantity,
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      color: Colors.green,
+                                                      fontWeight: FontWeight
+                                                          .normal,
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ))
-                              ],
+                                          new Container(
+                                            child: new Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                new Row(
+                                                  children: <Widget>[
+                                                    new Container(
+                                                      margin: EdgeInsets
+                                                          .fromLTRB(
+                                                          10.0, 0.0, 0.0, 0.0),
+                                                      child: new Text('Rs. ' +
+                                                          item.price,
+                                                        style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          color: Colors.green,
+                                                          fontWeight: FontWeight
+                                                              .normal,
+                                                        ),
+                                                        textAlign: TextAlign
+                                                            .right,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                new GestureDetector(
+                                                    onTap: () async {
+                                                      DBProvider.db
+                                                          .deleteClient(
+                                                          item.product_id,
+                                                          item.product_name);
+                                                      _calcTotal();
+                                                      setState(() {});
+                                                    },
+                                                    child: new Container(
+                                                        child: new Container(
+                                                          margin: EdgeInsets
+                                                              .fromLTRB(
+                                                              0.0, 3.0, 10.0,
+                                                              0.0),
+                                                          child: Icon(
+                                                            Icons.delete,
+                                                            color: Colors.green,
+                                                          ),
+                                                          height: 20.0,
+                                                          width: 20.0,
+                                                        ))),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ))
+                                ],
+                              ),
                             ),
-                          ),
-                        ), onTap: () {
-                           double pr = double.parse(item.price)/double.parse(item.quantity);
+                          ), onTap: () {
+                          double pr = double.parse(item.price) /
+                              double.parse(item.quantity);
                           Navigator.pushReplacement(
                               context,
                               new MaterialPageRoute(
@@ -408,7 +419,7 @@ class CartState extends State<Cart> {
                                       productInfo(
                                           item.product_name, item.category,
                                           item.description,
-                                          pr.toString(),item.product_id)));
+                                          pr.toString(), item.product_id)));
                         },
                         );
                       },
@@ -417,67 +428,69 @@ class CartState extends State<Cart> {
 
                   new Container(
                     color: Colors.white10,
-                      margin: EdgeInsets.all(10.0),
-                      child: Container(
-                        child: Row(
-                          children: <Widget>[
-                            new GestureDetector(
-                                onTap: () async {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (BuildContext
-                                          context) =>
-                                              CoupanList()));
-                                  setState(() {
-                                  });
-                                },
-                                child: new Container(
-                                  margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                                  alignment: Alignment.center,
-                                  child: Text('Apply Coupan',style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 14.0,),),
-                                  height: 40.0,
-                                  width: 130.0,
-                                  decoration: BoxDecoration(color: Colors.blue,
-                                      shape: BoxShape.rectangle),
-                                ),),
-                            new Container(
+                    margin: EdgeInsets.all(10.0),
+                    child: Container(
+                      child: Row(
+                        children: <Widget>[
+                          new GestureDetector(
+                            onTap: () async {
+                              Navigator.pushReplacement(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (BuildContext
+                                      context) =>
+                                          CoupanList()));
+                              setState(() {});
+                            },
+                            child: new Container(
                               margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                               alignment: Alignment.center,
-                              child: Text('${coupan}',style: TextStyle(
-                                  fontWeight: FontWeight.normal,color: Colors.black,fontSize: 15.0),),
-                              width: 130.0,
+                              child: Text('Apply Coupan', style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 14.0,),),
                               height: 40.0,
-                             // decoration: BoxDecoration(border: Border.all(color: Colors.black26,width: 1.0)),
-                            ),
-                            new GestureDetector(
-                                onTap: () async {
-                                  setState(() {
-                                    dltCoupan();
-                                  });
-                                 /* setState(() {
+                              width: 130.0,
+                              decoration: BoxDecoration(color: Colors.blue,
+                                  shape: BoxShape.rectangle),
+                            ),),
+                          new Container(
+                            margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                            alignment: Alignment.center,
+                            child: Text('${coupan}', style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                                fontSize: 15.0),),
+                            width: 130.0,
+                            height: 40.0,
+                            // decoration: BoxDecoration(border: Border.all(color: Colors.black26,width: 1.0)),
+                          ),
+                          new GestureDetector(
+                              onTap: () async {
+                                setState(() {
+                                  dltCoupan();
+                                });
+                                /* setState(() {
                                     _calcTotal();
                                   });
                                   setState(() => coupan = '');
                                   setState(() => paid_amount = carttotal);
                                   setState(() => discount_amount = 0.0);*/
-                                },
-                                child: new Container(
-                                    child: new Container(
-                                      margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: Colors.blue,
-                                      ),
-                                      height: 35.0,
-                                      width: 35.0,
-                                    ))),
-                          ],
-                        ),
+                              },
+                              child: new Container(
+                                  child: new Container(
+                                    margin: EdgeInsets.fromLTRB(
+                                        5.0, 5.0, 5.0, 5.0),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.blue,
+                                    ),
+                                    height: 35.0,
+                                    width: 35.0,
+                                  ))),
+                        ],
                       ),
+                    ),
 
                   ),
                   new Container(
@@ -489,7 +502,8 @@ class CartState extends State<Cart> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 0.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      20.0, 2.0, 0.0, 0.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
                                     'Total Amount :',
@@ -498,9 +512,11 @@ class CartState extends State<Cart> {
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
+
                                 ),
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(0.0, 2.0, 50.0, 0.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      0.0, 2.0, 50.0, 0.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
                                     "Rs."'${carttotal}',
@@ -516,7 +532,8 @@ class CartState extends State<Cart> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 0.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      20.0, 2.0, 0.0, 0.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
                                     'Discount Amount :',
@@ -527,7 +544,8 @@ class CartState extends State<Cart> {
                                   ),
                                 ),
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(0.0, 2.0, 50.0, 0.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      0.0, 2.0, 50.0, 0.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
                                     "Rs."'${con}',
@@ -543,7 +561,8 @@ class CartState extends State<Cart> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 2.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      20.0, 2.0, 0.0, 2.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text('Paid Amount :',
                                     style: TextStyle(
@@ -553,7 +572,8 @@ class CartState extends State<Cart> {
                                   ),
                                 ),
                                 new Container(
-                                  margin: EdgeInsets.fromLTRB(0.0, 2.0, 50.0, 2.0),
+                                  margin: EdgeInsets.fromLTRB(
+                                      0.0, 2.0, 50.0, 2.0),
                                   alignment: Alignment.topLeft,
                                   child: new Text(
                                     "Rs."'${paid_amount}',
@@ -610,20 +630,21 @@ class CartState extends State<Cart> {
                     checkoutData(context);
                     Navigator.of(context).pushReplacement(
                         new MaterialPageRoute(
-                            builder:(BuildContext context) =>
-                            new CheckOutPgae('${carttotal}',
-                                '${widget.price}',
-                                '${paid_amount}',
-                                '${widget.code}',
-                                '${product_id}',
-                                '${product_name}',
-                                '${price}',
-                                '${quantity}'),
+                          builder: (BuildContext context) =>
+                          new CheckOutPgae(
+                              '${carttotal}',
+                              '${widget.price}',
+                              '${paid_amount}',
+                              '${widget.code}',
+                              '${product_id}',
+                              '${product_name}',
+                              '${price}',
+                              '${quantity}'),
                         )
                     );
 
 
-                  //  checkoutData(context);
+                    //  checkoutData(context);
                     // checkout(DBProvider.db.getAllClientsCard());
                     //   checkoutData();
                     //startPayment(_total);
@@ -638,9 +659,9 @@ class CartState extends State<Cart> {
               ],
             )),
       );
-    }else{
+    } else {
       return Scaffold(
-          appBar: AppBar(title: Text("My Cart")),
+        appBar: AppBar(title: Text("My Cart")),
         backgroundColor: Colors.white,
         body: new Stack(
           children: <Widget>[
@@ -655,8 +676,7 @@ class CartState extends State<Cart> {
           ],
         ),
       );
-
-  }
     }
+  }
   }
 

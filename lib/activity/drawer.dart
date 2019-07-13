@@ -23,9 +23,12 @@ import 'package:ricwala_application/fragment/TodayDeal.dart';
 import 'package:ricwala_application/fragment/WishList.dart';
 import 'package:ricwala_application/fragment/dashboardFragment.dart';
 import 'package:ricwala_application/fragment/homeFragment.dart';
+import 'package:ricwala_application/fragment/location.dart';
 import 'package:ricwala_application/fragment/main1.dart';
 import 'package:ricwala_application/model/ClientModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+
 //import 'package:image_picker/image_picker.dart';  image_picker: ^0.6.0+8
 
 import 'package:youtube_player/youtube_player.dart';
@@ -68,7 +71,7 @@ class HomePageState extends State<HomePage> {
   List<Client> lis = List();
   int count =0;
 
- /* pickImageFromGallery(ImageSource source) {
+  /* pickImageFromGallery(ImageSource source) {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
@@ -83,10 +86,9 @@ class HomePageState extends State<HomePage> {
     setState(() {
 
     });
-
   }
 
-   total() async {
+  total() async {
      var  cartitem =  await DBProvider.db.getCount();
      setState(() => count = cartitem);
   }
@@ -273,6 +275,7 @@ class HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
+
               Navigator.push(
                   context,
                   new MaterialPageRoute(

@@ -26,19 +26,58 @@ class productInfoState extends State<productInfo> {
   String reply;
   double spinner = 1;
   double total = 0;
+  int count =0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     total = double.tryParse('${widget.price}');
+    cartCount();
   }
+
+  cartCount() async {
+    var cartitem =  await DBProvider.db.getCount();
+    setState(()  {
+      count =  cartitem;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return new Scaffold(
-      appBar: AppBar(title: Text("Product Detail")),
+      appBar: AppBar(
+        title: Text("Product Detail"),
+        actions: <Widget>[
+          Center
+            (child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: InkResponse(
+                  onTap: (){
+                    Navigator.of(context).pushReplacement(
+                        new MaterialPageRoute(
+                            builder:(BuildContext context) =>
+                            new Cart('','','','','0')
+                        )
+                    );                      },
+                  child: Icon(Icons.shopping_cart),
+                ),
+              ),
+              Positioned(
+                child: Container(
+                  child: Text('${count}'),
+                  // child: Text((DBP.length > 0) ? model.cartListing.length.toString() : "",textAlign: TextAlign.center,style: TextStyle(color: Colors.orangeAccent,fontWeight: FontWeight.bold),),
+                ),
+              ),
+            ],
+          ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
           child: Center(
         child: Container(
@@ -222,7 +261,10 @@ class productInfoState extends State<productInfo> {
                 onPressed: () {
                   DBProvider.db.FinalClient('${widget.id}', '${widget.name}',
                       spinner.toString(), total.toString(), '${widget.category}','${widget.description}');
-                  Future.delayed(const Duration(milliseconds: 2000), () {
+                  Future.delayed(const Duration(milliseconds: 1500), () {
+                    cartCount();
+                  });
+                 /* Future.delayed(const Duration(milliseconds: 2000), () {
                     setState(() {
                       Navigator.of(context).pushReplacement(
                           new MaterialPageRoute(
@@ -230,8 +272,7 @@ class productInfoState extends State<productInfo> {
                               new Cart('','','','','0')
                           )
                       );                    });
-                  });
-
+                  });*/
                 },
                 child: Text(
                   "Add To Cart",

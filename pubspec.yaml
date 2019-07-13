@@ -32,9 +32,11 @@ dependencies:
   carousel_pro: ^0.0.13
   grouped_buttons: ^1.0.4
   razorpay_plugin: ^0.2.9
-  video_player:
   youtube_player: ^3.4.1
   firebase_messaging: ^5.0.4
+  flutter_places_dialog: ^1.0.5
+  geolocator: ^5.0.0
+
 
 dev_dependencies:
   flutter_test:

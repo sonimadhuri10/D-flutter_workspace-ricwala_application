@@ -61,7 +61,6 @@ class DBProvider {
     decrementClient(pro_id, product_name, product_quantity, product_price,
         product_category,Client.fromMap(res.first).price,Client.fromMap(res.first).quantity) :
         deleteClient(pro_id, product_name);
-
   }
 
   insertClient(String pro_id,String product_name,String product_quantity,
@@ -159,18 +158,14 @@ class DBProvider {
     db.rawUpdate("UPDATE Cart SET  quantity = '${(quan-1).toString()}',price = '${(tabPrice-price).toString()}' WHERE product_id = '${pro_id}'");
     Fluttertoast.showToast(msg: "Update In Your Cart", toastLength: Toast.LENGTH_SHORT, gravity:
     ToastGravity.BOTTOM, timeInSecForIos: 1, backgroundColor: Colors.green, textColor: Colors.white, fontSize: 16.0);
-
     return res;
   }
-
-
 
   getClient(String id) async {
     final db = await database;
     var res = await db.query("Cart", where: "product_id = ?", whereArgs: [id]);
     return res.isNotEmpty ? Client.fromMap(res.first) : null;
   }
-
 
   Future<List<Client>> getAllClients() async {
     final db = await database;

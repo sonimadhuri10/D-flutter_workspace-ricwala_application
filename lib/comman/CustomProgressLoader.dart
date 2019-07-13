@@ -11,7 +11,8 @@ class CustomProgressLoader{
           children: [
             new Padding(
                 padding: new EdgeInsets.all(30.0),
-                child: new CircularProgressIndicator()),
+                child: new CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                )),
             new Padding(
                 padding: new EdgeInsets.all(30.0), child: new Text("Loading")),
           ],

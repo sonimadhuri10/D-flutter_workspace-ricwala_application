@@ -4,6 +4,7 @@ import 'package:ricwala_application/activity/ForgotPassword.dart';
 import 'package:ricwala_application/activity/otpvarify.dart';
 import 'package:ricwala_application/activity/signup.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ricwala_application/activity/startscreen.dart';
 import 'package:ricwala_application/comman/Constants.dart';
 import 'package:ricwala_application/comman/CustomProgressLoader.dart';
 import 'package:ricwala_application/comman/Connectivity.dart';
@@ -80,7 +81,7 @@ class LoginState extends State<Login> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
       } else if (message == "otp verification pending") {
@@ -96,7 +97,7 @@ class LoginState extends State<Login> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
       }
@@ -123,7 +124,7 @@ class LoginState extends State<Login> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
       return reply;
@@ -189,14 +190,25 @@ class LoginState extends State<Login> {
     }
   }
 
+  Future<bool> _onWillPop() {
+    Navigator.pushReplacement(context,
+        new MaterialPageRoute(builder: (BuildContext context) => StartScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    return new Scaffold(
-      appBar: new AppBar(
+    return new WillPopScope(onWillPop: _onWillPop,child:
+    new Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
         backgroundColor: Colors.green,
-        title: new Text("Login"),
+        leading: new IconButton(icon: const Icon(Icons.arrow_back_ios), onPressed: () {
+          Navigator.pushReplacement(context, new MaterialPageRoute(
+            builder: (BuildContext context) => new StartScreen(),
+          ));
+        }),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -360,6 +372,7 @@ class LoginState extends State<Login> {
           ),
         ),
       ),
+    )
     );
   }
 }
